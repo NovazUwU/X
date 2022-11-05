@@ -1,3 +1,5 @@
+repeat task.wait() until game:IsLoaded() 
+
 local ind
 ind = hookmetamethod(game, "__index", newcclosure(function(self, index, ...)
     if self == game then 
@@ -107,3 +109,23 @@ PathfindingService = game:GetService("PathfindingService")
 Heartbeat = RunService.Heartbeat 
 RenderStepped = RunService.RenderStepped 
 Stepped = RunService.Stepped 
+Player = Players.LocalPlayer 
+Character = Player.Character or Player.CharacterAdded:Wait() 
+HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+Humanoid = Character:WaitForChild("Humanoid") 
+Camera = Workspace.CurrentCamera
+Huge = math.huge 
+
+Workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
+    Camera = Workspace.CurrentCamera 
+end)
+
+Player.CharacterAdded:Connect(function(character)
+    Character = character 
+    HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+    Humanoid = Character:WaitForChild("Humanoid")
+end)
+
+for index, value in pairs(getconnections(Player.Idled)) do 
+    value:Disable()
+end 
