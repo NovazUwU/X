@@ -1,19 +1,5 @@
 repeat task.wait() until game:IsLoaded() 
 
-local ind
-ind = hookmetamethod(game, "__index", newcclosure(function(self, index, ...)
-    if self == game then 
-        if self:GetService(index) then 
-            return self:GetService(index)
-        elseif self:FindFirstChild(index) then 
-            return self:FindFirstChild(index) 
-        else 
-            return ind(self, index, ...)
-        end 
-    end 
-    return ind(self, index, ...)
-end))
-
 Workspace = game:GetService("Workspace")
 RunService = game:GetService("RunService")
 GuiService = game:GetService("GuiService")
