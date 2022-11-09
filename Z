@@ -1,0 +1,293 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Novaz5792/X/main/X"))() 
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Novaz5792/X/main/Y"))()
+
+local oldmt11 
+oldmt11 = hookmetamethod(game, "__index", newcclosure(function(self, index, ...)
+    if (not checkcaller()) and self == Humanoid and index == "WalkSpeed" or index == "JumpPower" then 
+        return 
+    end 
+    return oldmt11(self, index, ...)
+end))
+
+allmobs = {}
+
+for i,v in pairs(workspace.Mobs:GetDescendants()) do 
+    if v:IsA("Configuration") and v:FindFirstChild("Npc_Configuration") then 
+        for i1,v1 in pairs(require(v:FindFirstChild("Npc_Configuration"))) do 
+            if i1 == "Name" then 
+                table.insert(allmobs, v1)
+            end 
+        end 
+    end 
+end 
+
+function checking(tbl, child, endtbl)
+    if tbl and #tbl > 0 and table.find(tbl, child:FindFirstChildOfClass("Model").Name) or tbl and #tbl < 1 then 
+        for i,v in pairs(require(child:FindFirstChild("Npc_Configuration"))) do 
+            if i == "Npc_Spawning" then 
+                for i1,v1 in pairs(v) do 
+                    if i1 == "Spawn_Locations" then 
+                        local magnitude = (HumanoidRootPart.Position - v1[1]).Magnitude 
+                        if magnitude < endtbl[2] then 
+                            endtbl[2] = magnitude 
+                            endtbl[1][1] = child 
+                            endtbl[1][2] = v1[1]
+                        end 
+                    end 
+                end 
+            end 
+        end 
+    end 
+end 
+
+function getclosestmob(tbl)
+    local ret = {{nil, Vector3.new()}, Huge} 
+    for i,v in pairs(Workspace.Mobs:GetChildren()) do 
+        for i1,v1 in pairs(v:GetChildren()) do 
+            if v1:FindFirstChildOfClass("Model") and v1:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid") and v1:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid").Health > 0 and v1:FindFirstChild("Npc_Configuration") then 
+                checking(tbl or {}, v1, ret)
+            end 
+            for i2,v2 in pairs(v1:GetChildren()) do 
+                if v2:FindFirstChildOfClass("Model") and v2:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid") and v2:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid").Health > 0 and v2:FindFirstChild("Npc_Configuration") then 
+                    checking(tbl or {}, v2, ret)
+                end 
+                for i3,v3 in pairs(v2:GetChildren()) do 
+                    if v3:FindFirstChildOfClass("Model") and v3:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid") and v3:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid").Health > 0 and v3:FindFirstChild("Npc_Configuration") then 
+                        checking(tbl or {}, v3, ret)
+                    end 
+                    for i4,v4 in pairs(v3:GetChildren()) do 
+                        if v4:FindFirstChildOfClass("Model") and v4:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid") and v4:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid").Health > 0 and v4:FindFirstChild("Npc_Configuration") then 
+                            checking(tbl or {}, v4, ret)
+                        end 
+                    end 
+                end 
+            end 
+        end 
+    end 
+    return ret[1]
+end 
+
+function getclosestplayer(tbl)
+    local ret = {nil, Huge} 
+    for i,v in pairs(Players:GetPlayers()) do 
+        if v ~= Player and v.Character and v.Character:FindFirstChild("Humanoid") and v.Character:FindFirstChild("HumanoidRootPart") and v.Character.Humanoid.Health > 0 then 
+            local magnitude = (HumanoidRootPart.Position - v.Character.HumanoidRootPart.Position).Magnitude 
+            if magnitude < ret[2] then 
+                ret[2] = magnitude 
+                ret[1] = v 
+            end 
+        end 
+    end 
+    return ret[1]
+end 
+
+local currentiteration = 1 
+function killaura(speed, weapon)
+    currentiteration = currentiteration + 1 
+    local thisiteration = currentiteration 
+    game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(weapon, Player, Character, HumanoidRootPart, Humanoid, 919)
+    game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(weapon, Player, Character, HumanoidRootPart, Humanoid, 4)
+    game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(weapon, Player, Character, HumanoidRootPart, Humanoid, 919)
+    game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(weapon, Player, Character, HumanoidRootPart, Humanoid, 4)
+    game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(weapon, Player, Character, HumanoidRootPart, Humanoid, 919)
+    game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(weapon, Player, Character, HumanoidRootPart, Humanoid, 4)
+    game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(weapon, Player, Character, HumanoidRootPart, Humanoid, 919)
+    game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(weapon, Player, Character, HumanoidRootPart, Humanoid, 4)
+    game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(weapon, Player, Character, HumanoidRootPart, Humanoid, 919)
+    game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(weapon, Player, Character, HumanoidRootPart, Humanoid, 4)
+    game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(weapon, Player, Character, HumanoidRootPart, Humanoid, 919)
+    game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(weapon, Player, Character, HumanoidRootPart, Humanoid, 4)
+    game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(weapon, Player, Character, HumanoidRootPart, Humanoid, 919)
+    game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(weapon, Player, Character, HumanoidRootPart, Humanoid, 4)
+    game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(weapon, Player, Character, HumanoidRootPart, Humanoid, 919)
+    local last = game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S_:InvokeServer(weapon, Player, Character, HumanoidRootPart, Humanoid, 4)
+    repeat Heartbeat:Wait() until last 
+    task.wait(tonumber(speed) or 1.3) 
+    if KillAura and thisiteration == currentiteration then 
+        killaura(speed, weapon)
+    end 
+end 
+
+function getchests() 
+    for i,v in pairs(Workspace.Debree:GetChildren()) do 
+        if v.Name == "Loot_Chest" and v:FindFirstChild("Drops") and v:FindFirstChild("Add_To_Inventory") then
+            for i1,v1 in pairs(v.Drops:GetChildren()) do 
+                spawn(function()
+                    v:FindFirstChild("Add_To_Inventory"):InvokeServer(v1.Name) 
+                end)
+            end 
+        end 
+    end 
+end 
+
+function stamina(amount)
+    getrenv()._G:Stamina(-amount)
+end 
+
+function breath(amount)
+    getrenv()._G:Breath(-amount)
+end 
+
+function eatsouls()
+    for i,v in pairs(Workspace.Debree:GetChildren()) do 
+        if v.Name == "Soul" and v:FindFirstChild("Handle") and v:FindFirstChild("Handle"):FindFirstChild("Eatthedamnsoul") then 
+            v.Handle.Eatthedamnsoul:FireServer()
+        end 
+    end 
+end
+
+function demonprogress()
+    local x = ReplicatedStorage:FindFirstChild("Player_Data")
+    if x then 
+        local y = x:FindFirstChild(Player.Name) 
+        if y then 
+            local z = y:FindFirstChild("DemonProgress") 
+            if z then 
+                return tostring(z:FindFirstChild("1").Value).."/"..tostring(z:FindFirstChild("2").Value)
+            end 
+        end 
+    end 
+end 
+
+function breathingprogress() 
+    local x = ReplicatedStorage:FindFirstChild("Player_Data")
+    if x then 
+        local y = x:FindFirstChild(Player.Name) 
+        if y then 
+            local z = y:FindFirstChild("BreathingProgress") 
+            if z then 
+                return tostring(z:FindFirstChild("1").Value).."/"..tostring(z:FindFirstChild("2").Value)
+            end 
+        end 
+    end 
+end 
+
+function clan()
+    local x = ReplicatedStorage:FindFirstChild("Player_Data")
+    if x then 
+        local y = x:FindFirstChild(Player.Name) 
+        if y then 
+            local z = y:FindFirstChild("Clan") 
+            if z then 
+                return tostring(z.Value)
+            end 
+        end 
+    end 
+end 
+
+function bda()
+    local x = ReplicatedStorage:FindFirstChild("Player_Data")
+    if x then 
+        local y = x:FindFirstChild(Player.Name) 
+        if y then 
+            local z = y:FindFirstChild("Demon_Art") 
+            if z then 
+                return tostring(z.Value)
+            end 
+        end 
+    end 
+end 
+
+function trainers()
+    return {
+        ["Shinobu"] = Vector3.new(2875, 317, -3919), 
+        ["Urokodaki"] = Vector3.new(712, 261, -2395), 
+        ["Thunder Dude"] = Vector3.new(-323, 427, -2384), 
+        ["Jinger"] = Vector3.new(1793, 334, -3521)
+    }
+end 
+
+function villages()
+    return {
+        "Zapiwara Mountain", "Waroru Cave", "Slasher Demon", "Butterfly Mension", "Dangerous Woods", "Ushumaru Village", "Ouwbayashi Home", "Kabiwaru Village", "Zapiwara Cave", "Final Selection", "Kiribating Village", "Wind Trainer", "Abubu Cave"
+    }
+end 
+
+function gotovillage(villagename)
+    game:GetService("ReplicatedStorage").teleport_player_to_location_for_map_tang:InvokeServer("Players."..Player.Name..".PlayerGui.Npc_Dialogue.Guis.ScreenGui.LocalScript", os.time(), villagename) 
+end 
+
+function heal()
+    game:GetService("ReplicatedStorage").Remotes.heal_tang123asd:FireServer(true)
+end 
+
+function stopheal() 
+    game:GetService("ReplicatedStorage").Remotes.heal_tang123asd:FireServer(false)
+end 
+
+function getclosesthorseguy()
+    local ret = {nil, Huge}
+    for i,v in pairs(Workspace:GetChildren()) do 
+        local x = v:FindFirstChild("Customization data ting")
+        if x and x:FindFirstChild("HumanoidRootPart") then 
+            local magnitude = (HumanoidRootPart.Position - x:FindFirstChild("HumanoidRootPart").Position).Magnitude 
+            if magnitude < ret[2] then 
+                ret[2] = magnitude 
+                ret[1] = x 
+            end 
+        end 
+    end 
+    return ret[1]
+end 
+
+function buygourd(size)
+    game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer("buysomething", Player, size.." Gourd", ReplicatedStorage:FindFirstChild("Player_Data"):FindFirstChild(Player.Name).Yen, ReplicatedStorage:FindFirstChild("Player_Data"):FindFirstChild(Player.Name).Inventory)
+end 
+
+function usegourd()
+    for i,v in pairs(Player.Backpack:GetChildren()) do 
+        if v.Name:match("Gourd") then 
+            game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S_:InvokeServer("blow_in_gourd_thing", Player, v, 1) 
+        end 
+    end 
+    for i,v in pairs(Character:GetChildren()) do 
+        if v.Name:match("Gourd") then 
+            game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S_:InvokeServer("blow_in_gourd_thing", Player, v, 1) 
+        end 
+    end 
+end 
+
+
+function meditate()
+    if Player.PlayerGui:FindFirstChild("ExcessGuis") and Player.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("Meditate_gui") then 
+        local q = Player.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("Meditate_gui"):FindFirstChild("Holder")
+        if q and q:FindFirstChild("LocalScript") and q.LocalScript:FindFirstChild("Value") then 
+            q.LocalScript.Value.Value = 100
+        end 
+    end 
+end 
+
+function pushup()
+    if Player.PlayerGui:FindFirstChild("ExcessGuis") and Player.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("Push_Up_Gui") then 
+        local q = Player.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("Push_Up_Gui"):FindFirstChild("Holder") 
+        if q and q:FindFirstChild("push_up_mat_local_script") and q:FindFirstChild("push_up_mat_local_script"):FindFirstChild("Value") then 
+            q:FindFirstChild("push_up_mat_local_script"):FindFirstChild("Value").Value = 100
+        end 
+    end 
+end
+
+function aimpractice()
+    if Player.PlayerGui:FindFirstChild("ExcessGuis") and Player.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("chairui") then 
+        local x = Player.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("chairui"):FindFirstChild("Holder") 
+        if x and x:FindFirstChild("LocalScript") and x:FindFirstChild("LocalScript"):FindFirstChild("Value") then 
+            x:FindFirstChild("LocalScript"):FindFirstChild("Value").Value = 100
+        end 
+    end 
+end 
+
+function cupgame()
+    if Player.PlayerGui:FindFirstChild("ExcessGuis") and Player.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("cup_game_gui") then 
+        local x = Player.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("cup_game_gui"):FindFirstChild("Holder") 
+        if x and x:FindFirstChild("cup_game_script123") and x:FindFirstChild("cup_game_script123"):FindFirstChild("Value") then 
+            x:FindFirstChild("cup_game_script123"):FindFirstChild("Value").Value = 100
+        end 
+    end 
+end 
+
+coroutine.wrap(function()
+    toggle = false
+    task.wait(5)
+    toggle = true 
+end)()
+
+repeat aimpractice() task.wait() until toggle
