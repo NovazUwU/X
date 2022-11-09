@@ -1,34 +1,39 @@
-local oldmt 
-oldmt = hookmetamethod(game, "__namecall", function(self, ...)
-    if (not checkcaller()) and getnamecallmethod():lower() == "kick" then 
-        return
-    end 
-    
-    if getnamecallmethod() == "InvokeServer" and self.Name == "reporthackerasdasd" then 
+repeat task.wait() until game:IsLoaded()
+
+if (not _G.LoadedY) then 
+    _G.LoadedY = true 
+    local oldmt 
+    oldmt = hookmetamethod(game, "__namecall", function(self, ...)
+        if (not checkcaller()) and getnamecallmethod():lower() == "kick" then 
+            return
+        end 
+
+        if getnamecallmethod() == "InvokeServer" and self.Name == "reporthackerasdasd" then 
+            return 
+        end 
+
+        if getnamecallmethod() == "FireServer" and self.Name:match("modd") then 
+            return 
+        end 
+        return oldmt(self, ...)
+    end)
+
+    local f = Player.PlayerScripts:WaitForChild("Small_Scripts"):WaitForChild("client_global_delete_script") 
+    local f1 = Player.PlayerScripts:WaitForChild("Small_Scripts"):WaitForChild("Client_Global_utility")
+    local f2 = ReplicatedStorage:WaitForChild("Modules"):WaitForChild("Server"):WaitForChild("Skills_Modules_Handler")
+
+    local oldmt1 
+    oldmt1 = hookmetamethod(game, "__index", function(self, index, ...)
+        if (not checkcaller()) and self == f or self == f1 and index == "Disabled" then 
+            return false 
+        end 
+        return oldmt1(self, index, ...)
+    end)
+
+    hookfunction(require(f2).Kick, function()
         return 
-    end 
-    
-    if getnamecallmethod() == "FireServer" and self.Name:match("modd") then 
-        return 
-    end 
-    return oldmt(self, ...)
-end)
+    end)
 
-local f = Player.PlayerScripts:WaitForChild("Small_Scripts"):WaitForChild("client_global_delete_script") 
-local f1 = Player.PlayerScripts:WaitForChild("Small_Scripts"):WaitForChild("Client_Global_utility")
-local f2 = ReplicatedStorage:WaitForChild("Modules"):WaitForChild("Server"):WaitForChild("Skills_Modules_Handler")
-
-local oldmt1 
-oldmt1 = hookmetamethod(game, "__index", function(self, index, ...)
-    if (not checkcaller()) and self == f or self == f1 and index == "Disabled" then 
-        return false 
-    end 
-    return oldmt1(self, index, ...)
-end)
-
-hookfunction(require(f2).Kick, function()
-    return 
-end)
-
-f.Disabled = true 
-f1.Disabled = true 
+    f.Disabled = true 
+    f1.Disabled = true 
+end 
