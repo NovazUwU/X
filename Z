@@ -9,54 +9,33 @@ oldmt11 = hookmetamethod(game, "__index", newcclosure(function(self, index, ...)
     return oldmt11(self, index, ...)
 end))
 
-allmobs = {}
-
-for i,v in pairs(workspace.Mobs:GetDescendants()) do 
-    if v:IsA("Configuration") and v:FindFirstChild("Npc_Configuration") then 
-        for i1,v1 in pairs(require(v:FindFirstChild("Npc_Configuration"))) do 
-            if i1 == "Name" then 
-                table.insert(allmobs, v1)
-            end 
-        end 
-    end 
-end 
-
 function checking(tbl, child, endtbl)
     if tbl and #tbl > 0 and table.find(tbl, child:FindFirstChildOfClass("Model").Name) or tbl and #tbl < 1 then 
-        for i,v in pairs(require(child:FindFirstChild("Npc_Configuration"))) do 
-            if i == "Npc_Spawning" then 
-                for i1,v1 in pairs(v) do 
-                    if i1 == "Spawn_Locations" then 
-                        local magnitude = (HumanoidRootPart.Position - v1[1]).Magnitude 
-                        if magnitude < endtbl[2] then 
-                            endtbl[2] = magnitude 
-                            endtbl[1][1] = child 
-                            endtbl[1][2] = v1[1]
-                        end 
-                    end 
-                end 
-            end 
+        local magnitude = (child:FindFirstChildOfClass("Model"):FindFirstChild("HumanoidRootPart").Position - HumanoidRootPart.Position).Magnitude 
+        if magnitude < endtbl[2] then 
+            endtbl[2] = magnitude 
+            endtbl[1] = child 
         end 
     end 
 end 
 
 function getclosestmob(tbl)
-    local ret = {{nil, Vector3.new()}, Huge} 
+    local ret = {nil, Huge} 
     for i,v in pairs(Workspace.Mobs:GetChildren()) do 
         for i1,v1 in pairs(v:GetChildren()) do 
-            if v1:FindFirstChildOfClass("Model") and v1:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid") and v1:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid").Health > 0 and v1:FindFirstChild("Npc_Configuration") then 
+            if v1:FindFirstChildOfClass("Model") and v1:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid") and v1:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid").Health > 0 and v1:FindFirstChildOfClass("Model"):FindFirstChild("HumanoidRootPart") then 
                 checking(tbl or {}, v1, ret)
             end 
             for i2,v2 in pairs(v1:GetChildren()) do 
-                if v2:FindFirstChildOfClass("Model") and v2:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid") and v2:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid").Health > 0 and v2:FindFirstChild("Npc_Configuration") then 
+                if v2:FindFirstChildOfClass("Model") and v2:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid") and v2:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid").Health > 0 and v2:FindFirstChildOfClass("Model"):FindFirstChild("HumanoidRootPart") then 
                     checking(tbl or {}, v2, ret)
                 end 
                 for i3,v3 in pairs(v2:GetChildren()) do 
-                    if v3:FindFirstChildOfClass("Model") and v3:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid") and v3:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid").Health > 0 and v3:FindFirstChild("Npc_Configuration") then 
+                    if v3:FindFirstChildOfClass("Model") and v3:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid") and v3:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid").Health > 0 and v3:FindFirstChildOfClass("Model"):FindFirstChild("HumanoidRootPart") then 
                         checking(tbl or {}, v3, ret)
                     end 
                     for i4,v4 in pairs(v3:GetChildren()) do 
-                        if v4:FindFirstChildOfClass("Model") and v4:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid") and v4:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid").Health > 0 and v4:FindFirstChild("Npc_Configuration") then 
+                        if v4:FindFirstChildOfClass("Model") and v4:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid") and v4:FindFirstChildOfClass("Model"):FindFirstChild("Humanoid").Health > 0 and v4:FindFirstChildOfClass("Model"):FindFirstChild("HumanoidRootPart") then 
                             checking(tbl or {}, v4, ret)
                         end 
                     end 
