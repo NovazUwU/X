@@ -48,8 +48,8 @@ end
 
 function getclosestplayer(tbl)
     local ret = {nil, Huge} 
-    for i,v in pairs(Players:GetPlayers()) do 
-        if v ~= Player and v.Character and v.Character:FindFirstChild("Humanoid") and v.Character:FindFirstChild("HumanoidRootPart") and v.Character.Humanoid.Health > 0 then 
+    for i,v in pairs(Players:GetPlayers()) do
+        if v ~= Player and v.Character and v.Character:FindFirstChild("Humanoid") and v.Character:FindFirstChild("HumanoidRootPart") and v.Character.Humanoid.Health > 0 and v.Character:FindFirstChild("UpperTorso") and (not v.Character:FindFirstChild("UpperTorso"):FindFirstChild("Revive_Humanoid")) then 
             local magnitude = (HumanoidRootPart.Position - v.Character.HumanoidRootPart.Position).Magnitude 
             if magnitude < ret[2] then 
                 ret[2] = magnitude 
