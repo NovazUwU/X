@@ -9,7 +9,7 @@ oldmt11 = hookmetamethod(game, "__index", newcclosure(function(self, index, ...)
     return oldmt11(self, index, ...)
 end))
 
-allmobs = {}
+--[[allmobs = {}
 
 for i,v in pairs(workspace.Mobs:GetDescendants()) do 
     if v:IsA("Configuration") and v:FindFirstChild("Npc_Configuration") then 
@@ -19,7 +19,7 @@ for i,v in pairs(workspace.Mobs:GetDescendants()) do
             end 
         end 
     end 
-end 
+end ]]
 
 function checking(tbl, child, endtbl)
     if tbl and #tbl > 0 and table.find(tbl, child:FindFirstChildOfClass("Model").Name) or tbl and #tbl < 1 then 
