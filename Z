@@ -283,11 +283,3 @@ function cupgame()
         end 
     end 
 end 
-
-coroutine.wrap(function()
-    toggle = false
-    task.wait(5)
-    toggle = true 
-end)()
-
-repeat aimpractice() task.wait() until toggle
