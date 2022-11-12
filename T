@@ -167,6 +167,9 @@ section2:AddToggle({
             if (not debounce) and ((not Player:FindFirstChild("combotangasd123")) or Player:FindFirstChild("combotangasd123") and Player:FindFirstChild("combotangasd123").Value < 1) then 
                 debounce = true 
                 local last = 9999
+                game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(c, Player, Character, HumanoidRootPart, Humanoid, 1, nil, nil, 99999)
+                game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(c, Player, Character, HumanoidRootPart, Humanoid, 2, nil, nil, 99999)
+                game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(c, Player, Character, HumanoidRootPart, Humanoid, 3, nil, nil, 99999)
                 game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(c, Player, Character, HumanoidRootPart, Humanoid, 4, nil, nil, 99999)
                 last = game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S_:InvokeServer(c, Player, Character, HumanoidRootPart, Humanoid, 919, nil, nil, 99999)
                 repeat Heartbeat:Wait() until last ~= 9999 
