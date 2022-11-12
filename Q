@@ -47,7 +47,7 @@ function getclosestmob()
     local ret = {{nil, Vector3.new()}, Huge} 
     for i,v in ipairs(mobs) do
         local model = v[1]:FindFirstChildOfClass("Model")
-        if model and model:FindFirstChild("Humanoid") and model.Humanoid.Health > 0 and model:IsDescendantOf(workspace.Mobs.Bosses) then 
+        if model and model:FindFirstChild("Humanoid") and model.Humanoid.Health > 0 then 
             local magnitude = (HumanoidRootPart.Position - v[2]).Magnitude 
             if magnitude < ret[2] then 
                 ret[2] = magnitude 
@@ -167,6 +167,9 @@ section2:AddToggle({
             if (not debounce) and ((not Player:FindFirstChild("combotangasd123")) or Player:FindFirstChild("combotangasd123") and Player:FindFirstChild("combotangasd123").Value < 1) then 
                 debounce = true 
                 local last = 9999
+                game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(c, Player, Character, HumanoidRootPart, Humanoid, 1, nil, nil, 99999)
+                game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(c, Player, Character, HumanoidRootPart, Humanoid, 2, nil, nil, 99999)
+                game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(c, Player, Character, HumanoidRootPart, Humanoid, 3, nil, nil, 99999)
                 game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(c, Player, Character, HumanoidRootPart, Humanoid, 4, nil, nil, 99999)
                 last = game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S_:InvokeServer(c, Player, Character, HumanoidRootPart, Humanoid, 919, nil, nil, 99999)
                 repeat Heartbeat:Wait() until last ~= 9999 
