@@ -47,7 +47,7 @@ function getclosestmob()
     local ret = {{nil, Vector3.new()}, Huge} 
     for i,v in ipairs(mobs) do
         local model = v[1]:FindFirstChildOfClass("Model")
-        if model and model:FindFirstChild("Humanoid") and model.Humanoid.Health > 0 then 
+        if model and model:FindFirstChild("Humanoid") and model.Humanoid.Health > 0 and model:IsDescendantOf(workspace.Mobs.Bosses)then 
             local magnitude = (HumanoidRootPart.Position - v[2]).Magnitude 
             if magnitude < ret[2] then 
                 ret[2] = magnitude 
