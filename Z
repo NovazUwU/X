@@ -226,39 +226,3 @@ function usegourd()
     end 
 end 
 
-
-function meditate()
-    if Player.PlayerGui:FindFirstChild("ExcessGuis") and Player.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("Meditate_gui") then 
-        local q = Player.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("Meditate_gui"):FindFirstChild("Holder")
-        if q and q:FindFirstChild("LocalScript") and q.LocalScript:FindFirstChild("Value") then 
-            q.LocalScript.Value.Value = 100
-        end 
-    end 
-end 
-
-function pushup()
-    if Player.PlayerGui:FindFirstChild("ExcessGuis") and Player.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("Push_Up_Gui") then 
-        local q = Player.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("Push_Up_Gui"):FindFirstChild("Holder") 
-        if q and q:FindFirstChild("push_up_mat_local_script") and q:FindFirstChild("push_up_mat_local_script"):FindFirstChild("Value") then 
-            q:FindFirstChild("push_up_mat_local_script"):FindFirstChild("Value").Value = 100
-        end 
-    end 
-end
-
-function aimpractice()
-    if Player.PlayerGui:FindFirstChild("ExcessGuis") and Player.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("chairui") then 
-        local x = Player.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("chairui"):FindFirstChild("Holder") 
-        if x and x:FindFirstChild("LocalScript") and x:FindFirstChild("LocalScript"):FindFirstChild("Value") then 
-            x:FindFirstChild("LocalScript"):FindFirstChild("Value").Value = 100
-        end 
-    end 
-end 
-
-function cupgame()
-    if Player.PlayerGui:FindFirstChild("ExcessGuis") and Player.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("cup_game_gui") then 
-        local x = Player.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("cup_game_gui"):FindFirstChild("Holder") 
-        if x and x:FindFirstChild("cup_game_script123") and x:FindFirstChild("cup_game_script123"):FindFirstChild("Value") then 
-            x:FindFirstChild("cup_game_script123"):FindFirstChild("Value").Value = 100
-        end 
-    end 
-end 
