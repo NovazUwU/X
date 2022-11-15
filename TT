@@ -1,3 +1,11 @@
+if game.ReplicatedStorage:FindFirstChild("Remotes"):FindFirstChild("getclientping") then 
+    game.ReplicatedStorage:FindFirstChild("Remotes"):FindFirstChild("getclientping").OnClientInvoke = function(Novaz5792) 
+        task.wait(5)
+        return true 
+    end 
+end 
+
+
 bossnames = {}
 
 if Workspace:FindFirstChild("Mobs") and Workspace.Mobs:FindFirstChild("Bosses") then 
