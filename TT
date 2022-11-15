@@ -1,0 +1,63 @@
+bossnames = {}
+
+if Workspace:FindFirstChild("Mobs") and Workspace.Mobs:FindFirstChild("Bosses") then 
+    for i,v in pairs(Workspace.Mobs.Bosses:GetChildren()) do 
+        if v:FindFirstChild("Npc_Configuration") then 
+            table.insert(bossnames, require(v.Npc_Configuration).Name) 
+        end 
+        for i1,v1 in pairs(v:GetChildren()) do 
+            if v1:FindFirstChild("Npc_Configuration") then 
+                table.insert(bossnames, require(v1.Npc_Configuration).Name)
+            end 
+        end 
+    end 
+end 
+
+mobnames = {}
+
+if Workspace:FindFirstChild("Mobs") then 
+    for i,v in pairs(Workspace.Mobs:GetDescendants()) do 
+        if (Workspace.Mobs:FindFirstChild("Bosses") and (not v:IsDescendantOf(Workspace.Mobs.Bosses))) or true then 
+            if v:FindFirstChild("Npc_Configuration") and (not table.find(mobnames, require(v.Npc_Configuration).Name)) and (not table.find(bossnames, require(v.Npc_Configuration).Name)) then 
+                table.insert(mobnames, require(v.Npc_Configuration).Name)
+            end 
+        end 
+    end 
+end 
+
+
+mobs = {} 
+
+if Workspace:FindFirstChild("Mobs") then 
+    for i,v in pairs(Workspace.Mobs:GetDescendants()) do 
+        if v:FindFirstChild("Npc_Configuration") and v:FindFirstChild("Npc_Configuration"):IsA("ModuleScript") then
+            local modu = require(v.Npc_Configuration) 
+            table.insert(mobs, {v, modu.Npc_Spawning.Spawn_Locations[1] or modu.Npc_Spawning.Spawn_Locations, modu.Name})
+        end 
+        if v.Parent:FindFirstChild("Npc_Configuration") and v.Parent:FindFirstChild("Npc_Configuration"):IsA("ModuleScript") then
+            local modu = require(v.Parent.Npc_Configuration) 
+            table.insert(mobs, {v.Parent, modu.Npc_Spawning.Spawn_Locations[1] or modu.Npc_Spawning.Spawn_Locations, modu.Name})
+        end 
+    end 
+    
+    Workspace.Mobs.DescendantAdded:Connect(function(v)
+        if v:FindFirstChild("Npc_Configuration") and v:FindFirstChild("Npc_Configuration"):IsA("ModuleScript") then
+            local modu = require(v.Npc_Configuration) 
+            table.insert(mobs, {v, modu.Npc_Spawning.Spawn_Locations[1] or modu.Npc_Spawning.Spawn_Locations, modu.Name})
+        end 
+        if v.Parent:FindFirstChild("Npc_Configuration") and v.Parent:FindFirstChild("Npc_Configuration"):IsA("ModuleScript") then
+            local modu = require(v.Parent.Npc_Configuration) 
+            table.insert(mobs, {v.Parent, modu.Npc_Spawning.Spawn_Locations[1] or modu.Npc_Spawning.Spawn_Locations, modu.Name})
+        end 
+    end)
+    
+    Workspace.Mobs.DescendantRemoving:Connect(function(v)
+        if v:IsA("Configuration") then 
+            for i1,v1 in ipairs(mobs) do 
+                if v1[1] == v then 
+                    table.remove(mobs, i1)
+                end 
+            end 
+        end 
+    end) 
+end 
