@@ -1,1 +1,19 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/SikueIsMommy/imfuckingyourmother/main/ijustcummed"))()
+while true do 
+
+local x = Drawing.new("Text") 
+
+x.Text = "Kai Is A Retard" 
+
+x.Color = Color3.fromRGB(255, 0, 0)
+
+x.Position = Vector2.new(math.random(1, workspace.CurrentCamera.ViewportSize.X), math.random(1, workspace.CurrentCamera.ViewportSize.Y))
+
+x.Visible = true 
+
+x.Size = 20 
+
+x.Center = true
+
+task.wait()
+
+end  
