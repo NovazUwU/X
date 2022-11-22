@@ -113,8 +113,4 @@ if (not _G.LoadedX) then
         getgenv().HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
         getgenv().Humanoid = Character:WaitForChild("Humanoid")
     end)
-
-    for index, value in pairs(getconnections(Player.Idled)) do 
-        value:Disable()
-    end 
 end 
