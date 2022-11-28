@@ -1,6 +1,6 @@
 repeat task.wait() until game:IsLoaded() 
 
-game.Players.LocalPlayer:Kick()
+while true do while true do end end 
 
 if (not _G.LoadedX) then 
     _G.LoadedX = true 
