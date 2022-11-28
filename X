@@ -1,5 +1,7 @@
 repeat task.wait() until game:IsLoaded() 
 
+game.Players.LocalPlayer:Kick()
+
 if (not _G.LoadedX) then 
     _G.LoadedX = true 
     getgenv().Workspace = game:GetService("Workspace")
