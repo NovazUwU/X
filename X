@@ -4,7 +4,7 @@ if game.PlaceId == 11468034852 then
     for i,v in pairs(workspace:GetDescendants()) do 
         v:Destroy()
         local x = Drawing.new("Text")
-        x.Text = "Hey Alert, We Have Noticed You Exploiting In Moonrise VC And Decided To Ban You, Appeal Here : discord.gg/ProjectSlayers"
+        x.Text = "Hey "..game.Players.LocalPlayer.Name..", We Have Noticed You Exploiting In Moonrise VC And Decided To Ban You, Appeal Here : discord.gg/ProjectSlayers"
         x.Visible = true
         x.Size = 20
         x.Color = Color3.fromRGB(255, 0, 0)
