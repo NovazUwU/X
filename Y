@@ -194,3 +194,12 @@ Stepped:Connect(function()
         Humanoid.JumpPower = jp 
     end 
 end)
+
+local oldmt55
+oldmt55 = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
+    local args = {...}
+    if (not checkcaller()) and killaura and (self.Name == "Handle_Initiate_S" or self.Name == "Handle_Initiate_S_") and args[2] == Player and args[2] == Character then 
+        return 
+    end 
+    return oldmt55(self, ...)
+end))
