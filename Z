@@ -1,6 +1,5 @@
 task.spawn(function()
-    repeat task.wait() until espp
-    
+    esps = {}
     rs = RenderStepped:Connect(function()
         pcall(function()
             if espp then 
