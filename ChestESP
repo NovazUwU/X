@@ -1,0 +1,126 @@
+local Player = game.Players.LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart") 
+local Humanoid = Character:WaitForChild("Humanoid")
+
+Player.CharacterAdded:Connect(function(cha)
+    Character = cha 
+    HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+    Humanoid = Character:WaitForChild("Humanoid")
+end)
+
+local tbl = {}
+
+task.spawn(function()
+    for i,v in pairs(game:GetService("Workspace").Effects:GetChildren()) do 
+        if v:FindFirstChild("Lock") and v.Lock:FindFirstChildOfClass("MeshPart") then 
+            local pos = workspace.CurrentCamera:WorldToViewportPoint(v.Lock:FindFirstChildOfClass("MeshPart").Position) 
+            if pos then 
+                local rarity 
+                for i1,v1 in pairs(v:GetDescendants()) do 
+                    if v1.Name:match("bLUEchEST") then 
+                        rarity = "Rare"  
+                    elseif v1.Name:match("ChestYes_Gold") then 
+                        rarity = "Common" 
+                    elseif v1.Name:match("UCC_Gold") then 
+                        rarity = "Uncommon" 
+                    elseif v1.Name:match("Mythical") then 
+                        rarity = "Mythical" 
+                    elseif v1.Name:match("Legendary") then 
+                        rarity = "Legendary"
+                    end 
+                end 
+                local color 
+                if rarity == "Legendary" then 
+                    color = Color3.fromRGB(255, 255, 0)
+                elseif rarity == "Mythical" then 
+                    color = Color3.fromRGB(255, 0, 255)
+                elseif rarity == "Uncommon" then 
+                    color = Color3.fromRGB(0, 255, 0)
+                elseif rarity == "Common" then 
+                    color = Color3.fromRGB(128, 128, 128)
+                elseif rarity == "Rare" then 
+                    color = Color3.fromRGB(0, 0, 128)
+                end 
+                local x = Drawing.new("Text") 
+                x.Position = Vector2.new(pos.X, pos.Y) 
+                x.Text = "Chest / "..rarity.." / "..tostring(math.floor((v.Lock:FindFirstChildOfClass("MeshPart").Position - HumanoidRootPart.Position).Magnitude))
+                x.Visible = true
+                x.Size = 20
+                x.Color = color or Color3.fromRGB(255, 0, 0)
+                x.Center = true 
+                x.Outline = true 
+                x.OutlineColor = Color3.fromRGB(1, 1, 1)
+                table.insert(tbl, {v, x, rarity}) 
+            end 
+        end 
+    end  
+end)
+
+task.spawn(function()
+    game:GetService("Workspace").Effects.ChildAdded:Connect(function(v)
+        if v:FindFirstChild("Lock") and v.Lock:FindFirstChildOfClass("MeshPart") then 
+            local pos = workspace.CurrentCamera:WorldToViewportPoint(v.Lock:FindFirstChildOfClass("MeshPart").Position) 
+            if pos then 
+                local rarity 
+                for i1,v1 in pairs(v:GetDescendants()) do 
+                    if v1.Name:match("bLUEchEST") then 
+                        rarity = "Rare"  
+                    elseif v1.Name:match("ChestYes_Gold") then 
+                        rarity = "Common" 
+                    elseif v1.Name:match("UCC_Gold") then 
+                        rarity = "Uncommon" 
+                    elseif v1.Name:match("Mythical") then 
+                        rarity = "Mythical" 
+                    elseif v1.Name:match("Legendary") then 
+                        rarity = "Legendary"
+                    end 
+                end 
+                local color 
+                if rarity == "Legendary" then 
+                    color = Color3.fromRGB(255, 255, 0)
+                elseif rarity == "Mythical" then 
+                    color = Color3.fromRGB(255, 0, 255)
+                elseif rarity == "Uncommon" then 
+                    color = Color3.fromRGB(0, 255, 0)
+                elseif rarity == "Common" then 
+                    color = Color3.fromRGB(128, 128, 128)
+                elseif rarity == "Rare" then 
+                    color = Color3.fromRGB(0, 0, 128)
+                end 
+                local x = Drawing.new("Text") 
+                x.Position = Vector2.new(pos.X, pos.Y) 
+                x.Text = "Chest / "..rarity.." / "..tostring(math.floor((v.Lock:FindFirstChildOfClass("MeshPart").Position - HumanoidRootPart.Position).Magnitude))
+                x.Visible = true
+                x.Size = 20
+                x.Color = color or Color3.fromRGB(255, 0, 0)
+                x.Center = true 
+                x.Outline = true 
+                x.OutlineColor = Color3.fromRGB(1, 1, 1)
+                table.insert(tbl, {v, x, rarity}) 
+            end 
+        end 
+    end)
+end)
+
+task.spawn(function()
+    while true do 
+        for i,v in pairs(tbl) do 
+            if v[1] and v[1]:FindFirstChild("Lock") and v[1].Lock:FindFirstChildOfClass("MeshPart") then 
+                local x, e = workspace.CurrentCamera:WorldToViewportPoint(v[1].Lock:FindFirstChildOfClass("MeshPart").Position)
+                if e then 
+                    v[2].Text = "Chest / ".. v[3] .." / "..tostring(math.floor((v[1].Lock:FindFirstChildOfClass("MeshPart").Position - HumanoidRootPart.Position).Magnitude))
+                    v[2].Visible = true 
+                    v[2].Position = Vector2.new(x.X, x.Y)
+                else 
+                    v[2].Visible = false 
+                end 
+            else
+                pcall(function()
+                    v[2]:Remove()
+                end) 
+            end 
+        end 
+        task.wait()
+    end 
+end)
