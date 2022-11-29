@@ -1,78 +1,82 @@
-rs = RenderStepped:Connect(function()
-    pcall(function()
-        if espp then 
-            for i,v in pairs(esps) do 
-                task.spawn(function()
-                    if v[2] and v[2] ~= Player and v[1] and v[2].Character and v[2].Character:FindFirstChild("HumanoidRootPart") then 
-                        local pos, onscreen = workspace.CurrentCamera:WorldToViewportPoint(v[2].Character.HumanoidRootPart.Position)
-                        if onscreen then 
-                            v[1].Position = Vector2.new(pos.X, pos.Y)
-                            v[1].Visible = true
-                            v[1].Color = espcolor
-                            v[1].Text = ((anme and "Name: "..v[2].Name.."\n") or "")..((hp and v[2].Character:FindFirstChild("Humanoid") and "Health: "..tostring(math.floor(v[2].Character.Humanoid.Health)).." / "..tostring(math.floor(v[2].Character.Humanoid.MaxHealth)).."\n") or "")..((dist and "Distance: "..tostring(math.floor((HumanoidRootPart.Position - v[2].Character.HumanoidRootPart.Position).Magnitude)).."m\n") or "")..((clam and ReplicatedStorage:FindFirstChild("Player_Data") and ReplicatedStorage.Player_Data:FindFirstChild(v[2].Name) and ReplicatedStorage.Player_Data[v[2].Name]:FindFirstChild("Clan") and "Clan: "..tostring(ReplicatedStorage.Player_Data[v[2].Name]:FindFirstChild("Clan").Value).."\n") or "")..((breathh and ReplicatedStorage:FindFirstChild("Player_Data") and ReplicatedStorage.Player_Data:FindFirstChild(v[2].Name) and ReplicatedStorage.Player_Data[v[2].Name]:FindFirstChild("Power") and "Breathing: "..tostring(ReplicatedStorage.Player_Data[v[2].Name]:FindFirstChild("Power").Value).."\n") or "")..((bald and ReplicatedStorage:FindFirstChild("Player_Data") and ReplicatedStorage.Player_Data:FindFirstChild(v[2].Name) and ReplicatedStorage.Player_Data[v[2].Name]:FindFirstChild("Demon_Art") and "BDA: "..tostring(ReplicatedStorage.Player_Data[v[2].Name]:FindFirstChild("Demon_Art").Value).."\n") or "")..((spin and ReplicatedStorage:FindFirstChild("Player_Data") and ReplicatedStorage.Player_Data:FindFirstChild(v[2].Name) and ReplicatedStorage.Player_Data[v[2].Name]:FindFirstChild("Spins") and "Spins: "..tostring(ReplicatedStorage.Player_Data[v[2].Name]:FindFirstChild("Spins").Value).."\n") or "")..((wen and ReplicatedStorage:FindFirstChild("Player_Data") and ReplicatedStorage.Player_Data:FindFirstChild(v[2].Name) and ReplicatedStorage.Player_Data[v[2].Name]:FindFirstChild("Yen") and "Wen: "..tostring(ReplicatedStorage.Player_Data[v[2].Name]:FindFirstChild("Yen").Value).."\n") or "")
-                        else
+task.spawn(function()
+    repeat task.wait() until espp
+    
+    rs = RenderStepped:Connect(function()
+        pcall(function()
+            if espp then 
+                for i,v in pairs(esps) do 
+                    task.spawn(function()
+                        if v[2] and v[2] ~= Player and v[1] and v[2].Character and v[2].Character:FindFirstChild("HumanoidRootPart") then 
+                            local pos, onscreen = workspace.CurrentCamera:WorldToViewportPoint(v[2].Character.HumanoidRootPart.Position)
+                            if onscreen then 
+                                v[1].Position = Vector2.new(pos.X, pos.Y)
+                                v[1].Visible = true
+                                v[1].Color = espcolor
+                                v[1].Text = ((anme and "Name: "..v[2].Name.."\n") or "")..((hp and v[2].Character:FindFirstChild("Humanoid") and "Health: "..tostring(math.floor(v[2].Character.Humanoid.Health)).." / "..tostring(math.floor(v[2].Character.Humanoid.MaxHealth)).."\n") or "")..((dist and "Distance: "..tostring(math.floor((HumanoidRootPart.Position - v[2].Character.HumanoidRootPart.Position).Magnitude)).."m\n") or "")..((clam and ReplicatedStorage:FindFirstChild("Player_Data") and ReplicatedStorage.Player_Data:FindFirstChild(v[2].Name) and ReplicatedStorage.Player_Data[v[2].Name]:FindFirstChild("Clan") and "Clan: "..tostring(ReplicatedStorage.Player_Data[v[2].Name]:FindFirstChild("Clan").Value).."\n") or "")..((breathh and ReplicatedStorage:FindFirstChild("Player_Data") and ReplicatedStorage.Player_Data:FindFirstChild(v[2].Name) and ReplicatedStorage.Player_Data[v[2].Name]:FindFirstChild("Power") and "Breathing: "..tostring(ReplicatedStorage.Player_Data[v[2].Name]:FindFirstChild("Power").Value).."\n") or "")..((bald and ReplicatedStorage:FindFirstChild("Player_Data") and ReplicatedStorage.Player_Data:FindFirstChild(v[2].Name) and ReplicatedStorage.Player_Data[v[2].Name]:FindFirstChild("Demon_Art") and "BDA: "..tostring(ReplicatedStorage.Player_Data[v[2].Name]:FindFirstChild("Demon_Art").Value).."\n") or "")..((spin and ReplicatedStorage:FindFirstChild("Player_Data") and ReplicatedStorage.Player_Data:FindFirstChild(v[2].Name) and ReplicatedStorage.Player_Data[v[2].Name]:FindFirstChild("Spins") and "Spins: "..tostring(ReplicatedStorage.Player_Data[v[2].Name]:FindFirstChild("Spins").Value).."\n") or "")..((wen and ReplicatedStorage:FindFirstChild("Player_Data") and ReplicatedStorage.Player_Data:FindFirstChild(v[2].Name) and ReplicatedStorage.Player_Data[v[2].Name]:FindFirstChild("Yen") and "Wen: "..tostring(ReplicatedStorage.Player_Data[v[2].Name]:FindFirstChild("Yen").Value).."\n") or "")
+                            else
+                                pcall(function()
+                                    v[1].Visible = false
+                                end)
+                            end 
+                        elseif v[1]  then 
                             pcall(function()
                                 v[1].Visible = false
                             end)
-                        end 
-                    elseif v[1]  then 
-                        pcall(function()
-                            v[1].Visible = false
-                        end)
-                    end  
-                end)
-            end 
-        end 
-        if (not espp) then 
-            for i,v in pairs(esps) do 
-                if v[1] and v[1].Visible then 
-                    v[1].Visible = false 
+                        end  
+                    end)
                 end 
             end 
-        end  
-    end)
-end) 
-
-for i, v in pairs(Players:GetPlayers()) do 
-    task.spawn(function()
-        if v ~= Player then 
+            if (not espp) then 
+                for i,v in pairs(esps) do 
+                    if v[1] and v[1].Visible then 
+                        v[1].Visible = false 
+                    end 
+                end 
+            end  
+        end)
+    end) 
+    
+    for i, v in pairs(Players:GetPlayers()) do 
+        task.spawn(function()
+            if v ~= Player then 
+                local x = Drawing.new("Text")
+                x.Text = "" 
+                x.Visible = false
+                x.Size = 20
+                x.Color = Color3.fromRGB(255, 0, 0)
+                x.Outline = true 
+                x.Center = true
+                x.Position = Vector2.new()
+                x.OutlineColor = Color3.fromRGB(1, 1, 1)
+                table.insert(esps, {x, v})
+            end 
+        end)
+    end 
+    
+    x = Players.PlayerAdded:Connect(function(Plr)
+        if Plr ~= Player then 
             local x = Drawing.new("Text")
             x.Text = "" 
             x.Visible = false
             x.Size = 20
             x.Color = Color3.fromRGB(255, 0, 0)
             x.Outline = true 
-            x.Center = true
+            x.Center = true 
             x.Position = Vector2.new()
             x.OutlineColor = Color3.fromRGB(1, 1, 1)
-            table.insert(esps, {x, v})
+            table.insert(esps, {x, Plr})
         end 
     end)
-end 
-
-x = Players.PlayerAdded:Connect(function(Plr)
-    if Plr ~= Player then 
-        local x = Drawing.new("Text")
-        x.Text = "" 
-        x.Visible = false
-        x.Size = 20
-        x.Color = Color3.fromRGB(255, 0, 0)
-        x.Outline = true 
-        x.Center = true 
-        x.Position = Vector2.new()
-        x.OutlineColor = Color3.fromRGB(1, 1, 1)
-        table.insert(esps, {x, Plr})
-    end 
-end)
-
-y = Players.PlayerRemoving:Connect(function(Plr)
-    for i,v in pairs(esps) do 
-        if v[2] and v[2] == Plr then 
-            task.spawn(function()
-                pcall(function()
-                    repeat task.wait() v[1]:Remove() until not v[1]  
+    
+    y = Players.PlayerRemoving:Connect(function(Plr)
+        for i,v in pairs(esps) do 
+            if v[2] and v[2] == Plr then 
+                task.spawn(function()
+                    pcall(function()
+                        repeat task.wait() v[1]:Remove() until not v[1]  
+                    end)
                 end)
-            end)
+            end 
         end 
-    end 
+    end) 
 end)
