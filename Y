@@ -175,3 +175,22 @@ function getclosestplayer()
     end 
     return ret[1]
 end 
+
+Stepped:Connect(function()
+    if autofarm or autocollectmoneybags or paff then 
+        for i,v in pairs(Character:GetChildren()) do 
+            if v.IsA(v, "BasePart") and v.CanCollide then 
+                v.CanCollide = false 
+            end 
+        end 
+        HumanoidRootPart.Velocity = Vector3.zero
+    end 
+        
+    if math.floor(ws) ~= 16 then 
+        Humanoid.WalkSpeed = ws 
+    end 
+        
+    if math.floor(jp) ~= 50 then 
+        Humanoid.JumpPower = jp 
+    end 
+end)
