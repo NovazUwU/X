@@ -177,7 +177,7 @@ function getclosestplayer()
 end 
 
 Stepped:Connect(function()
-    if autofarm or autocollectmoneybags or paff then 
+    if autofarm or autocollectmoneybags or paff or autofarmmugen then 
         for i,v in pairs(Character:GetChildren()) do 
             if v.IsA(v, "BasePart") and v.CanCollide then 
                 v.CanCollide = false 
