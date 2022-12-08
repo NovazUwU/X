@@ -1,0 +1,278 @@
+local Things = {}
+local Tabs = {}
+local Library = {}
+local Connections = {}
+local Selected
+local Abbreviations = {"s", "ms", "us", "ns"}
+local StartOS = os.clock()
+Library.__index = Library
+
+function Abbreviate(Number)
+    local Index = math.abs(math.floor(math.log(Number, 1000)))
+	if Abbreviations[Index] then
+	    local RoundedString = tostring(Number / (1000 ^ Index))
+		local Return = (string.split(RoundedString, ".")[1] or RoundedString)..Abbreviations[Index]
+		return Return  
+	else
+		return Number
+	end
+end
+
+local Watermark = Drawing.new("Text")
+Watermark.Text = "Novaz#0001" 
+Watermark.Visible = true 
+Watermark.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X - 40, workspace.CurrentCamera.ViewportSize.Y - 20) 
+Watermark.Size = 20 
+Watermark.Transparency = 1 
+Watermark.Color = Color3.fromRGB(255, 255, 255)
+Watermark.Outline = true 
+Watermark.OutlineColor = Color3.fromRGB(1, 1, 1)
+Watermark.Center = true
+
+function Library.new()
+    return setmetatable({}, Library)
+end 
+
+function Library:CreateTab(Data)
+    local Return = {}
+    local Data = Data or {} 
+    local Children = {} 
+    local Tab = Drawing.new("Text")
+    Tab.Text = Data["Name"] or "Tab"
+    Tab.Visible = true 
+    Tab.Position = Vector2.new(15, 300 + (#Things * 20)) 
+    Tab.Size = Data["Size"] or 20  
+    Tab.Transparency = Data["Transparency"] or 1  
+    Tab.Color = Data["Color"] or Color3.fromRGB(255, 255, 255)
+    Tab.Outline = Data["Outline"] or true 
+    Tab.OutlineColor = Data["OutlineColor"] or Color3.fromRGB(1, 1, 1)
+    table.insert(Things, {Tab, true, function() for i,v in pairs(Things) do if v[4] and v[4] == Tab then v[2] = not v[2]end end end, "Tab"})
+    function Return:AddButton(Data1)
+        local Data1 = Data1 or {}
+        local Button = Drawing.new("Text") 
+        Button.Text = Data1["Name"] or Data1["Text"] or "Button"
+        Button.Visible = true 
+        Button.Position = Vector2.new(35, 300 + (#Things * 20)) 
+        Button.Size = Data1["Size"] or 20  
+        Button.Transparency = Data1["Transparency"] or 1  
+        Button.Color = Data1["Color"] or Color3.fromRGB(255, 255, 255)
+        Button.Outline = Data1["Outline"] or true 
+        Button.OutlineColor = Data1["OutlineColor"] or Color3.fromRGB(1, 1, 1)
+        table.insert(Things, {Button, true, (Data1["Callback"] or function() end), Tab})
+        return Button 
+    end 
+    function Return:AddLabel(Data1)
+        local Return1 = {} 
+        local Data1 = Data1 or {}
+        local Label = Drawing.new("Text")
+        Label.Text = Data1["Name"] or Data1["Text"] or "Label"
+        Label.Visible = true 
+        Label.Position = Vector2.new(35, 300 + (#Things * 20)) 
+        Label.Size = Data1["Size"] or 20 
+        Label.Transparency = Data1["Transparency"] or 1 
+        Label.Color = Data1["Color"] or Color3.fromRGB(255, 255, 255)
+        Label.Outline = Data1["Outline"] or true 
+        Label.OutlineColor = Data1["OutlineColor"] or Color3.fromRGB(1, 1, 1)
+        table.insert(Things, {Label, true, function() end, Tab})
+        function Return1:Set(String) 
+            Label.Text = String
+        end 
+        return Return1 
+    end
+    function Return:AddToggle(Data1)
+        local Data1 = Data1 or {} 
+        local Toggle = Drawing.new("Text")
+        Toggle.Text = (Data1["Name"] or Data1["Text"] or "Toggle")..": <off>"
+        Toggle.Visible = true 
+        Toggle.Position = Vector2.new(35, 300 + (#Things * 20)) 
+        Toggle.Size = Data1["Size"] or 20 
+        Toggle.Transparency = Data1["Transparency"] or 1 
+        Toggle.Color = Data1["Color"] or Color3.fromRGB(255, 255, 255)
+        Toggle.Outline = Data1["Outline"] or true 
+        Toggle.OutlineColor = Data1["OutlineColor"] or Color3.fromRGB(1, 1, 1)
+        table.insert(Things, {Toggle, true, (Data1["Callback"] or function() end), Tab, "Toggle", false})
+    end 
+    function Return:AddSlider(Data1)
+        local Data1 = Data1 or {} 
+        local Slider = Drawing.new("Text")
+        Slider.Text = (Data1["Name"] or Data1["Text"] or "Slider")..": <"..(((Data1["Value"] <= Data1["Max"] and Data1["Value"]) or Data1["Max"]) and ((Data1["Value"] >= Data1["Min"] and Data1["Value"]) or Data1["Min"]) or 0)..">"
+        Slider.Visible = true 
+        Slider.Position = Vector2.new(35, 300 + (#Things * 20)) 
+        Slider.Size = Data1["Size"] or 20 
+        Slider.Transparency = Data1["Transparency"] or 1 
+        Slider.Color = Data1["Color"] or Color3.fromRGB(255, 255, 255)
+        Slider.Outline = Data1["Outline"] or true 
+        Slider.OutlineColor = Data1["OutlineColor"] or Color3.fromRGB(1, 1, 1)
+        table.insert(Things, {Slider, true, (Data1["Callback"] or function() end), Tab, "Slider", (Data1["Value"] or 0), (Data1["Precision"] or 1), (Data1["Min"] or 0), (Data1["Max"] or 0)})
+    end 
+    return Return  
+end 
+
+Connections.Connection1 = game:GetService("RunService").RenderStepped:Connect(function()
+    local CurrentIndex = 0 
+    for i,v in ipairs(Things) do
+        pcall(function()
+            if v[2] then 
+                v[1].Visible = true 
+                v[1].Position = Vector2.new(v[1].Position.X, 300 + (CurrentIndex * 20))
+                CurrentIndex = CurrentIndex + 1
+            else 
+                v[1].Visible = false 
+            end 
+        end)
+    end 
+end)
+
+Connections.Connection1 = game:GetService("UserInputService").InputBegan:Connect(function(input, gpe)
+    if gpe then return end 
+    if input.KeyCode == Enum.KeyCode.Return then 
+        if Selected and Selected[3] and not Selected[5] then
+            Selected[3]()  
+        end  
+    end 
+end)
+
+function Control(action, state, input, gpe)
+    if gpe or state == Enum.UserInputState.End then return end 
+    if input.KeyCode == Enum.KeyCode.Down then 
+        if not Selected then 
+            Selected = Things[1] 
+            Selected[1].Text = ">"..Selected[1].Text 
+            Selected[1].Color = Color3.fromRGB(140, 140, 140)
+            return 
+        end 
+        for i,v in ipairs(Things) do 
+            if v == Selected then
+                local OldText = Selected[1].Text:sub(2)
+                Selected[1].Text = OldText
+                Selected[1].Color = Color3.fromRGB(255, 255, 255)
+                local Indexes = {}
+                for i1,v1 in ipairs(Things) do 
+                    if i1 > i and v1[2] then
+                        table.insert(Indexes, i1)
+                    end 
+                end 
+                local Index
+                if Indexes[1] then 
+                    Index = math.min(table.unpack(Indexes))
+                end 
+                if Index and Things[Index] then
+                    Selected = Things[Index] 
+                    Selected[1].Text = ">"..Selected[1].Text
+                    Selected[1].Color = Color3.fromRGB(140, 140, 140) 
+                else 
+                    Selected = Things[1]
+                    Selected[1].Text = ">"..Selected[1].Text 
+                    Selected[1].Color = Color3.fromRGB(140, 140, 140)
+                end 
+                return 
+            end 
+        end 
+    elseif input.KeyCode == Enum.KeyCode.Up then 
+        if not Selected then 
+            Selected = Things[#Things] 
+            Selected[1].Text = ">"..Selected[1].Text 
+            Selected[1].Color = Color3.fromRGB(140, 140, 140)
+            return 
+        end 
+        for i,v in ipairs(Things) do 
+            if v == Selected then
+                local OldText = Selected[1].Text:sub(2)
+                Selected[1].Text = OldText
+                Selected[1].Color = Color3.fromRGB(255, 255, 255)
+                local Indexes = {}
+                for i1,v1 in ipairs(Things) do 
+                    if i1 < i and v1[2] then
+                        table.insert(Indexes, i1)
+                    end 
+                end 
+                local Index
+                if Indexes[1] then 
+                    Index = math.max(table.unpack(Indexes))
+                end 
+                if Index and Things[Index] then
+                    Selected = Things[Index] 
+                    Selected[1].Text = ">"..Selected[1].Text
+                    Selected[1].Color = Color3.fromRGB(140, 140, 140) 
+                else 
+                    local HighestIndex = 1 
+                    for i1,v1 in pairs(Things) do 
+                        if v1[2] and i1 > HighestIndex then 
+                            HighestIndex = i1 
+                        end 
+                    end 
+                    Selected = Things[HighestIndex]
+                    Selected[1].Text = ">"..Selected[1].Text 
+                    Selected[1].Color = Color3.fromRGB(140, 140, 140)
+                end 
+                return 
+            end 
+        end 
+    elseif input.KeyCode == Enum.KeyCode.Right then 
+        if Selected and Selected[5] and Selected[5] == "Slider" and Selected[6] and Selected[7] and Selected[8] and Selected[9] then
+            if Selected[6] + Selected[7] > Selected[9] then 
+                Selected[6] = Selected[9] 
+                Selected[1].Text = (string.split(Selected[1].Text, ":")[1]..": <"..(math.floor(Selected[6] * 10) / 10)..">")
+                Selected[3](Selected[6])
+            else 
+                Selected[6] = Selected[6] + Selected[7] 
+                Selected[1].Text = (string.split(Selected[1].Text, ":")[1]..": <"..(math.floor(Selected[6] * 10) / 10)..">")
+                Selected[3](Selected[6])
+            end  
+        elseif Selected and Selected[5] and Selected[5] == "Toggle" and Selected[6] ~= nil then
+            Selected[6] = not Selected[6] 
+            Selected[1].Text = (string.split(Selected[1].Text, ":")[1])..": "..((Selected[6] and "<on>") or "<off>")
+            Selected[3](Selected[6])
+        end 
+    elseif input.KeyCode == Enum.KeyCode.Left then 
+        if Selected and Selected[5] and Selected[5] == "Slider" and Selected[6] and Selected[7] and Selected[8] and Selected[9] then 
+            if Selected[6] - Selected[7] < Selected[8] then 
+                Selected[6] = Selected[8] 
+                Selected[1].Text = (string.split(Selected[1].Text, ":")[1]..": <"..(math.floor(Selected[6] * 10) / 10)..">")
+                Selected[3](Selected[6])
+            else 
+                Selected[6] = Selected[6] - Selected[7] 
+                Selected[1].Text = (string.split(Selected[1].Text, ":")[1]..": <"..(math.floor(Selected[6] * 10) / 10)..">")
+                Selected[3](Selected[6])
+            end  
+        elseif Selected and Selected[5] and Selected[5] == "Toggle" and Selected[6] ~= nil then
+            Selected[6] = not Selected[6] 
+            Selected[1].Text = (string.split(Selected[1].Text, ":")[1])..": "..((Selected[6] and "<on>") or "<off>")
+            Selected[3](Selected[6])
+        end 
+    end 
+end
+
+local ContextActionService = game:GetService("ContextActionService")
+
+local function UserInputServiceReplica(...)
+	Control(...)
+	return Enum.ContextActionResult.Sink
+end
+
+ContextActionService:BindActionAtPriority("ArrowKeyDisable", UserInputServiceReplica, false, Enum.ContextActionPriority.High.Value, Enum.KeyCode.Up, Enum.KeyCode.Down, Enum.KeyCode.Left, Enum.KeyCode.Right)
+
+task.spawn(function()
+    local Credits = "Loader Hardcoded By Novaz#0001\nLoaded In "..(Abbreviate(os.clock() - StartOS))
+    local Credit = Drawing.new("Text")
+    Credit.Text = ""
+    Credit.Color = Color3.fromRGB(255, 255, 255)
+    Credit.Size = 25
+    Credit.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y / 2)
+    Credit.Outline = true 
+    Credit.OutlineColor = Color3.fromRGB(1, 1, 1) 
+    Credit.Visible = true 
+    Credit.Transparency = 1 
+    Credit.Center = true 
+    
+    for i = 1, #Credits do 
+        Credit.Text = Credit.Text..string.char(string.byte(Credits, i))  
+        task.wait(.05)
+    end
+    
+    task.wait(2)
+    
+    Credit:Remove()
+end)
+
+return Library.new()
