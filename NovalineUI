@@ -149,8 +149,8 @@ local Box = Drawing.new("Square")
 Box.Filled = true 
 Box.Transparency = 0.5 
 Box.Visible = true 
-Box.Position = Vector2.new(15, 300)
-Box.Size = Vector2.new(#Things * 10, #Things * 20)
+Box.Position = Vector2.new(10, 300)
+Box.Size = Vector2.new(175, #Things * 20)
 Box.Color = Color3.fromRGB(0, 0, 0)
 Box.Thickness = 2
 
@@ -167,8 +167,8 @@ Connections.Connection1 = game:GetService("RunService").RenderStepped:Connect(fu
             end 
         end)
     end 
-    Box.Position = Vector2.new(15, 300)
-    Box.Size = Vector2.new(#Things * 10, #Things * 20)
+    Box.Position = Vector2.new(10, 300)
+    Box.Size = Vector2.new(175, (#Things * 20) + 5)
 end)
 
 Connections.Connection1 = game:GetService("UserInputService").InputBegan:Connect(function(input, gpe)
