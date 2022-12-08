@@ -275,4 +275,4 @@ task.spawn(function()
     Credit:Remove()
 end)
 
-return Library.new()
+return {Library.new(), Things}
