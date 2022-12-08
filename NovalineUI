@@ -1,7 +1,7 @@
-local Things = {}
-local Tabs = {}
+Things = {}
+Tabs = {}
 local Library = {}
-local Connections = {}
+Connections = {}
 local Selected
 local Colors = {
     Color3.fromRGB(255, 0, 0), 
@@ -145,7 +145,7 @@ function Library:CreateTab(Data)
     return Return  
 end 
 
-local Box = Drawing.new("Square")
+Box = Drawing.new("Square")
 Box.Filled = true 
 Box.Transparency = 0.5 
 Box.Visible = true 
