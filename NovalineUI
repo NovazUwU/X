@@ -1,7 +1,7 @@
-Things = {}
-Tabs = {}
+local Things = {}
+local Tabs = {}
 local Library = {}
-Connections = {}
+local Connections = {}
 local Selected
 local Colors = {
     Color3.fromRGB(255, 0, 0), 
@@ -36,6 +36,16 @@ function Abbreviate(Number)
 	else
 		return Number
 	end
+end
+
+local function GetTextBounds(Drawing)
+    local Text = Drawing.Text
+    local Size = Drawing.Size
+    if Text:sub(1, 1) == ">" then 
+        Text = Text:sub(2)
+    end 
+    local Bounds = game:GetService("TextService"):GetTextSize(Text, Size, "Code", Vector2.new(Size * #Text, Size))
+    return Bounds
 end
 
 local Watermark = Drawing.new("Text")
@@ -145,12 +155,20 @@ function Library:CreateTab(Data)
     return Return  
 end 
 
-Box = Drawing.new("Square")
+local Box = Drawing.new("Square")
 Box.Filled = true 
 Box.Transparency = 0.5 
 Box.Visible = true 
 Box.Position = Vector2.new(10, 300)
-Box.Size = Vector2.new(175, #Things * 20)
+local Amount = 0 
+local Amount1 = 0 
+for i,v in pairs(Things) do 
+    if GetTextBounds(v[1]).X > Amount then 
+        Amount = GetTextBounds(v[1]).X
+    end 
+    Amount1 = Amount1 + GetTextBounds(v[1]).Y
+end 
+Box.Size = Vector2.new(Amount, Amount1 + 5)
 Box.Color = Color3.fromRGB(0, 0, 0)
 Box.Thickness = 2
 
@@ -158,7 +176,7 @@ Connections.Connection1 = game:GetService("RunService").RenderStepped:Connect(fu
     local CurrentIndex = 0 
     for i,v in ipairs(Things) do
         pcall(function()
-            if v[2] then 
+            if v and v[2] then 
                 v[1].Visible = true 
                 v[1].Position = Vector2.new(v[1].Position.X, 300 + (CurrentIndex * 20))
                 CurrentIndex = CurrentIndex + 1
@@ -168,10 +186,18 @@ Connections.Connection1 = game:GetService("RunService").RenderStepped:Connect(fu
         end)
     end 
     Box.Position = Vector2.new(10, 300)
-    Box.Size = Vector2.new(175, (#Things * 20) + 5)
+    local Amount = 0 
+    local Amount1 = 0 
+    for i,v in pairs(Things) do 
+        if GetTextBounds(v[1]).X > Amount then 
+            Amount = GetTextBounds(v[1]).X
+        end 
+        Amount1 = Amount1 + GetTextBounds(v[1]).Y
+    end 
+    Box.Size = Vector2.new(Amount, Amount1 + 5)
 end)
 
-Connections.Connection1 = game:GetService("UserInputService").InputBegan:Connect(function(input, gpe)
+Connections.Connection2 = game:GetService("UserInputService").InputBegan:Connect(function(input, gpe)
     if gpe then return end 
     if input.KeyCode == Enum.KeyCode.Return then 
         if Selected and Selected[3] and not Selected[5] then
@@ -393,7 +419,7 @@ end)
 local Lib = Library.new()
 
 local UI = Lib:CreateTab({
-    Name = "UI"
+    Name = "Novaline"
 })
 
 UI:AddButton({
