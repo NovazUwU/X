@@ -152,6 +152,27 @@ function Library:CreateTab(Data)
         table.insert(Things, {Color, true, (Data1["Callback"] or function() end), Tab, "Colorpicker", 1})
         Data1["Callback"](Colors[1])
     end 
+    function Return:AddDropdownSlider(Data1)
+        local Data1 = Data1 or {} 
+        local DropdownSlider = Drawing.new("Text")
+        DropdownSlider.Text = (Data1["Name"] or Data1["Text"] or "DropdownSlider")
+        DropdownSlider.Visible = true 
+        DropdownSlider.Position = Vector2.new(35, 300 + (#Things * 20))
+        DropdownSlider.Size = Data1["Size"] or 20 
+        DropdownSlider.Transparency = Data1["Transparency"] or 1 
+        DropdownSlider.Color = Data1["Color"] or Color3.fromRGB(255, 255, 255) 
+        DropdownSlider.Outline = Data1["Outline"] or true 
+        DropdownSlider.OutlineColor = Data1["OutlineColor"] or Color3.fromRGB(1, 1, 1)
+        if Data1["Sort"] then 
+            if Data1["List"] then 
+                table.sort(Data1["List"])
+            end 
+            if Data1["Table"] then 
+                table.sort(Data1["Table"])
+            end 
+        end 
+        table.insert(Things, {DropdownSlider, true, (Data1["Callback"] or function() end), Tab, "DropdownSlider", (Data1["List"] or Data1["Table"] or {}), Data1["Value"] or 1})
+    end 
     return Return  
 end 
 
@@ -354,6 +375,19 @@ function Control(action, state, input, gpe)
                 Selected[3](Colors[Selected[6]])
                 Selected[1].Color = Colors[Selected[6]]
             end 
+        elseif Selected and Selected[1] and Selected[5] and Selected[5] == "DropdownSlider" and Selected[6] and Selected[7] then 
+            if Selected[6][Selected[7] + 1] then 
+                Selected[7] = Selected[7] + 1 
+                local Origin = string.split(Selected[1].Text, ":")[1]
+                Selected[1].Text = Origin..": "..Selected[6][Selected[7]]
+                Selected[3](Selected[6][Selected[7]])  
+            else  
+                Selected[7] = 1 
+                local NewText = ""
+                local Origin = string.split(Selected[1].Text, ":")[1]
+                Selected[1].Text = Origin..": "..Selected[6][Selected[7]]
+                Selected[3](Selected[6][Selected[7]])   
+            end
         end 
     elseif input.KeyCode == Enum.KeyCode.Left then 
         if Selected and Selected[5] and Selected[5] == "Slider" and Selected[6] and Selected[7] and Selected[8] and Selected[9] then 
@@ -379,7 +413,20 @@ function Control(action, state, input, gpe)
                 Selected[6] = Selected[6] - 1 
                 Selected[3](Colors[Selected[6]]) 
                 Selected[1].Color = Colors[Selected[6]]
-            end 
+            end  
+        elseif Selected and Selected[1] and Selected[5] and Selected[5] == "DropdownSlider" and Selected[6] and Selected[7] then 
+            if Selected[6][Selected[7] - 1] then 
+                Selected[7] = Selected[7] - 1 
+                local Origin = string.split(Selected[1].Text, ":")[1]
+                Selected[1].Text = Origin..": "..Selected[6][Selected[7]]
+                Selected[3](Selected[6][Selected[7]])  
+            else  
+                Selected[7] = #Selected[6] 
+                local NewText = ""
+                local Origin = string.split(Selected[1].Text, ":")[1]
+                Selected[1].Text = Origin..": "..Selected[6][Selected[7]]
+                Selected[3](Selected[6][Selected[7]])   
+            end
         end 
     end 
 end
