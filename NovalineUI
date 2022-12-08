@@ -432,6 +432,7 @@ UI:AddButton({
                 v:Disconnect()
             end)
         end 
+	Box:Remove()
     end 
 })
 
