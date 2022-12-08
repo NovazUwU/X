@@ -145,6 +145,15 @@ function Library:CreateTab(Data)
     return Return  
 end 
 
+local Box = Drawing.new("Square")
+Box.Filled = true 
+Box.Transparency = 0.4 
+Box.Visible = true 
+Box.Position = Vector2.new(15, 300)
+Box.Size = Vector2.new(#Things * 10, #Things * 20)
+Box.Color = Color3.fromRGB(0, 0, 0)
+Box.Thickness = 2
+
 Connections.Connection1 = game:GetService("RunService").RenderStepped:Connect(function()
     local CurrentIndex = 0 
     for i,v in ipairs(Things) do
@@ -158,6 +167,8 @@ Connections.Connection1 = game:GetService("RunService").RenderStepped:Connect(fu
             end 
         end)
     end 
+    Box.Position = Vector2.new(15, 300)
+    Box.Size = Vector2.new(#Things * 10, #Things * 20)
 end)
 
 Connections.Connection1 = game:GetService("UserInputService").InputBegan:Connect(function(input, gpe)
@@ -379,5 +390,49 @@ task.spawn(function()
     Credit:Remove()
 end)
 
+local Lib = Library.new()
 
-return {Library.new(), Things}
+local UI = Lib:CreateTab({
+    Name = "UI"
+})
+
+UI:AddButton({
+    Name = "Open Discord Invite",
+    Callback = function()
+        syn.request({
+            Url = "http://127.0.0.1:6463/rpc?v=1",
+            Method = "POST",
+                Headers = {
+                    ["Content-Type"] = "application/json",
+                    ["origin"] = "https://discord.com",
+                },
+            Body = game:GetService("HttpService"):JSONEncode({
+                ["args"] = {
+                    ["code"] = "K2YaGqa7fR",
+                },
+                ["cmd"] = "INVITE_BROWSER",
+                ["nonce"] = "."
+            })
+        })
+    end 
+})
+
+UI:AddButton({
+    Name = "Destroy UI",
+    Callback = function()
+        for i,v in pairs(Things) do 
+            task.spawn(function()
+                pcall(function()
+                    v[1]:Remove()
+                end)
+            end)
+        end 
+        for i,v in pairs(Connections) do 
+            task.spawn(function()
+                v:Disconnect()
+            end)
+        end 
+    end 
+})
+
+return Lib
