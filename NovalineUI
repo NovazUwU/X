@@ -147,7 +147,7 @@ end
 
 local Box = Drawing.new("Square")
 Box.Filled = true 
-Box.Transparency = 0.4 
+Box.Transparency = 0.5 
 Box.Visible = true 
 Box.Position = Vector2.new(15, 300)
 Box.Size = Vector2.new(#Things * 10, #Things * 20)
@@ -432,8 +432,6 @@ UI:AddButton({
                 v:Disconnect()
             end)
         end 
-	Box:Remove()
+        Box:Remove()
     end 
 })
-
-return Lib
