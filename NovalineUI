@@ -3,6 +3,26 @@ local Tabs = {}
 local Library = {}
 local Connections = {}
 local Selected
+local Colors = {
+    Color3.fromRGB(255, 0, 0), 
+    Color3.fromRGB(255, 136, 0),
+    Color3.fromRGB(255, 255, 0),
+    Color3.fromRGB(160, 255, 0),
+    Color3.fromRGB(0, 255, 0),
+    Color3.fromRGB(0, 255, 195),
+    Color3.fromRGB(0, 213, 255),
+    Color3.fromRGB(0, 145, 255),
+    Color3.fromRGB(0, 60, 255),
+    Color3.fromRGB(102, 0, 255),
+    Color3.fromRGB(162, 0, 255),
+    Color3.fromRGB(221, 0, 255),
+    Color3.fromRGB(255, 0, 128),
+    Color3.fromRGB(255, 255, 255),
+    Color3.fromRGB(165, 165, 165),
+    Color3.fromRGB(107, 107, 107),
+    Color3.fromRGB(61, 61, 61),
+    Color3.fromRGB(0, 0, 0)
+}
 local Abbreviations = {"s", "ms", "us", "ns"}
 local StartOS = os.clock()
 Library.__index = Library
@@ -104,6 +124,23 @@ function Library:CreateTab(Data)
         Slider.Outline = Data1["Outline"] or true 
         Slider.OutlineColor = Data1["OutlineColor"] or Color3.fromRGB(1, 1, 1)
         table.insert(Things, {Slider, true, (Data1["Callback"] or function() end), Tab, "Slider", (Data1["Value"] or 0), (Data1["Precision"] or 1), (Data1["Min"] or 0), (Data1["Max"] or 0)})
+        if Data1["Callback"] then 
+            Data1["Callback"]((((Data1["Value"] <= Data1["Max"] and Data1["Value"]) or Data1["Max"]) and ((Data1["Value"] >= Data1["Min"] and Data1["Value"]) or Data1["Min"]) or 0)) 
+        end 
+    end 
+    function Return:AddColorpicker(Data1)
+        local Data1 = Data1 or {} 
+        local Color = Drawing.new("Text")
+        Color.Text = (Data1["Name"] or Data1["Text"] or "Colorpicker") 
+        Color.Visible = true 
+        Color.Position = Vector2.new(35, 300 + (#Things * 20))
+        Color.Size = Data1["Size"] or 20 
+        Color.Transparency = Data1["Transparency"] or 1 
+        Color.Color = Data1["Value"] or Data1["Color"] or Colors[1] 
+        Color.Outline = Data1["Outline"] or true 
+        Color.OutlineColor = Data1["OutlineColor"] or Color3.fromRGB(1, 1, 1)
+        table.insert(Things, {Color, true, (Data1["Callback"] or function() end), Tab, "Colorpicker", 1})
+        Data1["Callback"](Colors[1])
     end 
     return Return  
 end 
@@ -138,14 +175,25 @@ function Control(action, state, input, gpe)
         if not Selected then 
             Selected = Things[1] 
             Selected[1].Text = ">"..Selected[1].Text 
-            Selected[1].Color = Color3.fromRGB(140, 140, 140)
+            if Selected[5] and Selected[5] == "Colorpicker" then 
+                Pass = false
+            end 
+            if Pass then 
+                Selected[1].Color = Color3.fromRGB(140, 140, 140)
+            end 
             return 
         end 
         for i,v in ipairs(Things) do 
             if v == Selected then
                 local OldText = Selected[1].Text:sub(2)
                 Selected[1].Text = OldText
-                Selected[1].Color = Color3.fromRGB(255, 255, 255)
+                local Pass = true 
+                if Selected[5] and Selected[5] == "Colorpicker" then 
+                    Pass = false
+                end 
+                if Pass then 
+                    Selected[1].Color = Color3.fromRGB(255, 255, 255)
+                end 
                 local Indexes = {}
                 for i1,v1 in ipairs(Things) do 
                     if i1 > i and v1[2] then
@@ -159,11 +207,23 @@ function Control(action, state, input, gpe)
                 if Index and Things[Index] then
                     Selected = Things[Index] 
                     Selected[1].Text = ">"..Selected[1].Text
-                    Selected[1].Color = Color3.fromRGB(140, 140, 140) 
+                    local Pass = true 
+                    if Selected[5] and Selected[5] == "Colorpicker" then 
+                        Pass = false
+                    end 
+                    if Pass then 
+                        Selected[1].Color = Color3.fromRGB(140, 140, 140)
+                    end 
                 else 
                     Selected = Things[1]
                     Selected[1].Text = ">"..Selected[1].Text 
-                    Selected[1].Color = Color3.fromRGB(140, 140, 140)
+                    local Pass = true 
+                    if Selected[5] and Selected[5] == "Colorpicker" then 
+                        Pass = false
+                    end 
+                    if Pass then 
+                        Selected[1].Color = Color3.fromRGB(140, 140, 140)
+                    end 
                 end 
                 return 
             end 
@@ -172,14 +232,26 @@ function Control(action, state, input, gpe)
         if not Selected then 
             Selected = Things[#Things] 
             Selected[1].Text = ">"..Selected[1].Text 
-            Selected[1].Color = Color3.fromRGB(140, 140, 140)
+            local Pass = true 
+            if Selected[5] and Selected[5] == "Colorpicker" then 
+                Pass = false
+            end 
+            if Pass then 
+                Selected[1].Color = Color3.fromRGB(140, 140, 140)
+            end 
             return 
         end 
         for i,v in ipairs(Things) do 
             if v == Selected then
                 local OldText = Selected[1].Text:sub(2)
                 Selected[1].Text = OldText
-                Selected[1].Color = Color3.fromRGB(255, 255, 255)
+                local Pass = true 
+                if Selected[5] and Selected[5] == "Colorpicker" then 
+                    Pass = false
+                end 
+                if Pass then 
+                    Selected[1].Color = Color3.fromRGB(255, 255, 255)
+                end 
                 local Indexes = {}
                 for i1,v1 in ipairs(Things) do 
                     if i1 < i and v1[2] then
@@ -193,7 +265,13 @@ function Control(action, state, input, gpe)
                 if Index and Things[Index] then
                     Selected = Things[Index] 
                     Selected[1].Text = ">"..Selected[1].Text
-                    Selected[1].Color = Color3.fromRGB(140, 140, 140) 
+                    local Pass = true 
+                    if Selected[5] and Selected[5] == "Colorpicker" then 
+                        Pass = false
+                    end 
+                    if Pass then 
+                        Selected[1].Color = Color3.fromRGB(140, 140, 140)
+                    end 
                 else 
                     local HighestIndex = 1 
                     for i1,v1 in pairs(Things) do 
@@ -203,7 +281,13 @@ function Control(action, state, input, gpe)
                     end 
                     Selected = Things[HighestIndex]
                     Selected[1].Text = ">"..Selected[1].Text 
-                    Selected[1].Color = Color3.fromRGB(140, 140, 140)
+                    local Pass = true 
+                    if Selected[5] and Selected[5] == "Colorpicker" then 
+                        Pass = false
+                    end 
+                    if Pass then 
+                        Selected[1].Color = Color3.fromRGB(140, 140, 140)
+                    end 
                 end 
                 return 
             end 
@@ -222,7 +306,17 @@ function Control(action, state, input, gpe)
         elseif Selected and Selected[5] and Selected[5] == "Toggle" and Selected[6] ~= nil then
             Selected[6] = not Selected[6] 
             Selected[1].Text = (string.split(Selected[1].Text, ":")[1])..": "..((Selected[6] and "<on>") or "<off>")
-            Selected[3](Selected[6])
+            Selected[3](Selected[6]) 
+        elseif Selected and Selected[5] and Selected[5] == "Colorpicker" and Selected[6] then 
+            if Selected[6] + 1 > #Colors then
+                Selected[6] = 1 
+                Selected[3](Colors[1])
+                Selected[1].Color = Colors[1]
+            else 
+                Selected[6] = Selected[6] + 1 
+                Selected[3](Colors[Selected[6]])
+                Selected[1].Color = Colors[Selected[6]]
+            end 
         end 
     elseif input.KeyCode == Enum.KeyCode.Left then 
         if Selected and Selected[5] and Selected[5] == "Slider" and Selected[6] and Selected[7] and Selected[8] and Selected[9] then 
@@ -239,6 +333,16 @@ function Control(action, state, input, gpe)
             Selected[6] = not Selected[6] 
             Selected[1].Text = (string.split(Selected[1].Text, ":")[1])..": "..((Selected[6] and "<on>") or "<off>")
             Selected[3](Selected[6])
+        elseif Selected and Selected[5] and Selected[5] == "Colorpicker" and Selected[6] then 
+            if Selected[6] - 1 < 1 then
+                Selected[6] = #Colors  
+                Selected[3](Colors[#Colors])
+                Selected[1].Color = Colors[#Colors]
+            else 
+                Selected[6] = Selected[6] - 1 
+                Selected[3](Colors[Selected[6]]) 
+                Selected[1].Color = Colors[Selected[6]]
+            end 
         end 
     end 
 end
@@ -274,5 +378,6 @@ task.spawn(function()
     
     Credit:Remove()
 end)
+
 
 return {Library.new(), Things}
