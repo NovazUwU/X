@@ -4,7 +4,7 @@
             if v[1] and v[1].Character and v[1].Character:FindFirstChild("HumanoidRootPart") and v[1].Character:FindFirstChildOfClass("Humanoid") then 
                 local x, c = Camera:WorldToViewportPoint(v[1].Character.HumanoidRootPart.Position)
                 if x and c then 
-                    pcall(function()
+                    
                         v[2].Text =((espname and "Name: "..v[1].Name..((v[1].Name ~= v[1].DisplayName and " | "..v[1].DisplayName) or "").."\n") or "")
                         ..((esphealth and "Health: "..math.floor(v[1].Character.Humanoid.Health).."/"..math.floor(v[1].Character.Humanoid.MaxHealth).."\n") or "")
                         ..((espdistance and "Distance: "..math.floor((HumanoidRootPart.Position - v[1].Character.HumanoidRootPart.Position).Magnitude).."m\n") or "")
@@ -16,7 +16,7 @@
                         v[2].Position = Vector2.new(x.X, x.Y)
                         v[2].Size = (espsize or 20) 
                         v[2].Color = (espcolor or Color3.fromRGB(255, 0, 0))
-                    end)
+                    
                 else
                     pcall(function()
                         v[2].Visible = false 
