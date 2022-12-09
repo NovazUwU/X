@@ -505,12 +505,13 @@ UI:AddButton({
 UI:AddButton({
     Name = "Destroy UI",
     Callback = function()
-        for i,v in pairs(Things) do 
+        for i,v in ipairs(Things) do 
             task.spawn(function()
                 pcall(function()
                     v[1]:Remove()
                 end)
             end)
+            table.remove(Things, i)
         end 
         for i,v in pairs(Connections) do 
             task.spawn(function()
@@ -520,6 +521,5 @@ UI:AddButton({
         Box:Remove()
     end 
 })
-
 
 return Lib
