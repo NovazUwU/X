@@ -236,7 +236,7 @@ Connections.Connection2 = game:GetService("UserInputService").InputBegan:Connect
 end)
 
 function UIActive()
-    return #Things > 0  
+    return Box.Visible
 end 
 
 function Control(action, state, input, gpe)
@@ -511,14 +511,13 @@ UI:AddButton({
                     v[1]:Remove()
                 end)
             end)
-            table.remove(Things, i)
         end 
         for i,v in pairs(Connections) do 
             task.spawn(function()
                 v:Disconnect()
             end)
         end 
-        Box:Remove()
+        Box.Visible = false
     end 
 })
 
