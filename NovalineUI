@@ -154,6 +154,7 @@ function Library:CreateTab(Data)
     end 
     function Return:AddDropdownSlider(Data1)
         local Data1 = Data1 or {} 
+        local Return1 = {}
         local DropdownSlider = Drawing.new("Text")
         DropdownSlider.Text = (Data1["Name"] or Data1["Text"] or "DropdownSlider")
         DropdownSlider.Visible = true 
@@ -172,6 +173,13 @@ function Library:CreateTab(Data)
             end 
         end 
         table.insert(Things, {DropdownSlider, true, (Data1["Callback"] or function() end), Tab, "DropdownSlider", (Data1["List"] or Data1["Table"] or {}), Data1["Value"] or 1})
+        function Return1:UpdateList(Table)
+            for i,v in pairs(Things) do 
+                if v[1] == DropdownSlider and v[6] then 
+                    v[6] = Table or {}
+                end 
+            end 
+        end 
     end 
     return Return  
 end 
@@ -226,6 +234,10 @@ Connections.Connection2 = game:GetService("UserInputService").InputBegan:Connect
         end  
     end 
 end)
+
+function UIActive()
+    return #Connections > 0  
+end 
 
 function Control(action, state, input, gpe)
     if gpe or state == Enum.UserInputState.End then return end 
@@ -352,12 +364,12 @@ function Control(action, state, input, gpe)
         end 
     elseif input.KeyCode == Enum.KeyCode.Right then 
         if Selected and Selected[5] and Selected[5] == "Slider" and Selected[6] and Selected[7] and Selected[8] and Selected[9] then
-            if Selected[6] + Selected[7] > Selected[9] then 
+            if Selected[6] + (Selected[7] / 10) >= Selected[9] then 
                 Selected[6] = Selected[9] 
-                Selected[1].Text = (string.split(Selected[1].Text, ":")[1]..": <"..(math.floor(Selected[6] * 10) / 10)..">")
+                Selected[1].Text = (string.split(Selected[1].Text, ":")[1]..": <"..(Selected[6])..">")
                 Selected[3](Selected[6])
             else 
-                Selected[6] = Selected[6] + Selected[7] 
+                Selected[6] = Selected[6] + (Selected[7] / 10)
                 Selected[1].Text = (string.split(Selected[1].Text, ":")[1]..": <"..(math.floor(Selected[6] * 10) / 10)..">")
                 Selected[3](Selected[6])
             end  
@@ -391,12 +403,12 @@ function Control(action, state, input, gpe)
         end 
     elseif input.KeyCode == Enum.KeyCode.Left then 
         if Selected and Selected[5] and Selected[5] == "Slider" and Selected[6] and Selected[7] and Selected[8] and Selected[9] then 
-            if Selected[6] - Selected[7] < Selected[8] then 
+            if Selected[6] - (Selected[7] / 10) <= Selected[8] then 
                 Selected[6] = Selected[8] 
                 Selected[1].Text = (string.split(Selected[1].Text, ":")[1]..": <"..(math.floor(Selected[6] * 10) / 10)..">")
                 Selected[3](Selected[6])
             else 
-                Selected[6] = Selected[6] - Selected[7] 
+                Selected[6] = Selected[6] - (Selected[7] / 10)
                 Selected[1].Text = (string.split(Selected[1].Text, ":")[1]..": <"..(math.floor(Selected[6] * 10) / 10)..">")
                 Selected[3](Selected[6])
             end  
@@ -508,5 +520,4 @@ UI:AddButton({
         Box:Remove()
     end 
 })
-
 return Lib
