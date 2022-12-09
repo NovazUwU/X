@@ -236,12 +236,7 @@ Connections.Connection2 = game:GetService("UserInputService").InputBegan:Connect
 end)
 
 function UIActive()
-    local Number = 0 
-    for i,v in pairs(Connections) do 
-        Number = Number + 1 
-    end 
-    print(Number)
-    return Number > 0  
+    return #Things > 0  
 end 
 
 function Control(action, state, input, gpe)
@@ -525,5 +520,6 @@ UI:AddButton({
         Box:Remove()
     end 
 })
+
 
 return Lib
