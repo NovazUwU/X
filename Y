@@ -124,6 +124,7 @@ function getclosestmob()
     local ret = {{nil, Vector3.new()}, Huge} 
     for i,v in pairs(mobs) do
         local model = v[1]:FindFirstChildOfClass("Model")
+        print(v[1], model, "0x01")
         if model and model:FindFirstChild("Humanoid") and model.Humanoid.Health > 0 then  
             local combined = {}
             if bossess and #bossess > 0 then 
@@ -136,6 +137,7 @@ function getclosestmob()
                     table.insert(combined, v)
                 end 
             end 
+            print(combined[1], "0x02")
             if combined and #combined > 0 and (not table.find(combined, require(v[1].Npc_Configuration).Name)) then 
                 continue 
             end 
