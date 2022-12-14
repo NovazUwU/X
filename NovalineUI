@@ -51,7 +51,7 @@ end
 local Watermark = Drawing.new("Text")
 Watermark.Text = "Novaz#0001" 
 Watermark.Visible = true 
-Watermark.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X - 40, workspace.CurrentCamera.ViewportSize.Y - 20) 
+Watermark.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X - 40, workspace.CurrentCamera.ViewportSize.Y - 50) 
 Watermark.Size = 20 
 Watermark.Transparency = 1 
 Watermark.Color = Color3.fromRGB(255, 255, 255)
