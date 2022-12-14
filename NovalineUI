@@ -518,6 +518,7 @@ UI:AddButton({
             end)
         end 
         Box.Visible = false
+	Watermark:Remove()
     end 
 })
 
