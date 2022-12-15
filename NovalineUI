@@ -192,10 +192,12 @@ Box.Position = Vector2.new(10, 300)
 local Amount = 0 
 local Amount1 = 0 
 for i,v in pairs(Things) do 
-    if GetTextBounds(v[1]).X > Amount then 
-        Amount = GetTextBounds(v[1]).X
-    end 
-    Amount1 = Amount1 + GetTextBounds(v[1]).Y
+    if v[2] then 
+        if GetTextBounds(v[1]).X > Amount then 
+            Amount = GetTextBounds(v[1]).X
+	end 
+	Amount1 = Amount1 + GetTextBounds(v[1]).Y
+    end
 end 
 Box.Size = Vector2.new(Amount, Amount1 + 5)
 Box.Color = Color3.fromRGB(0, 0, 0)
@@ -218,10 +220,12 @@ Connections.Connection1 = game:GetService("RunService").RenderStepped:Connect(fu
     local Amount = 0 
     local Amount1 = 0 
     for i,v in pairs(Things) do 
-        if GetTextBounds(v[1]).X > Amount then 
-            Amount = GetTextBounds(v[1]).X
-        end 
-        Amount1 = Amount1 + GetTextBounds(v[1]).Y
+    	if v[2] then 
+            if GetTextBounds(v[1]).X > Amount then 
+		Amount = GetTextBounds(v[1]).X
+	    end 
+	    Amount1 = Amount1 + GetTextBounds(v[1]).Y
+	end
     end 
     Box.Size = Vector2.new(Amount, Amount1 + 5)
 end)
