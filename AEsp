@@ -1,0 +1,114 @@
+for i,v in next, Players:GetPlayers() do 
+    Setup(v)
+end 
+
+for i,v in next, workspace.Effects:GetChildren() do 
+    Setup1(v)
+end 
+
+Players.PlayerAdded:Connect(function(Player)
+    Setup(Player)
+end)
+
+workspace.Effects.ChildAdded:Connect(function(Child)
+    Setup1(Child)
+end)
+
+game:GetService("RunService").RenderStepped:Connect(function()
+    for i,v in next, Drawings1 do 
+        if type(v) == "table" then 
+            if UIActive() and ChestESPEnabled and v[1] and v[1]:FindFirstChild("Lock") and v[1].Lock:FindFirstChildOfClass("MeshPart") then 
+                local Point, IsPointVisible = workspace.CurrentCamera:WorldToViewportPoint(v[1].Lock:FindFirstChildOfClass("MeshPart").Position)
+                if IsPointVisible then
+                    pcall(function()
+                        if (not v[3]) then 
+                            local Rarity = "Unknown"
+                            for i1,v1 in next, v[1]:GetDescendants() do 
+                                if v1.Name:match("bLUEchEST") then 
+                                    Rarity = "Rare"
+                                elseif v1.Name:match("ChestYes_Gold") then 
+                                    Rarity = "Common"
+                                elseif v1.Name:match("UCC_Gold") then 
+                                    Rarity = "Uncommon"
+                                elseif v1.Name:match("Mythical") then 
+                                    Rarity = "Mythical"
+                                elseif v1.Name:match("Legendary") then 
+                                    Rarity = "Legendary"
+                                end 
+                            end 
+                            local Color 
+                            if Rarity == "Legendary" then 
+                                Color = Color3.fromRGB(255, 255, 0)
+                            elseif Rarity == "Mythical" then 
+                                Color = Color3.fromRGB(255, 0, 255)
+                            elseif Rarity == "Uncommon" then 
+                                Color = Color3.fromRGB(0, 255, 0)
+                            elseif Rarity == "Common" then 
+                                Color = Color3.fromRGB(128, 128, 128)
+                            elseif Rarity == "Rare" then 
+                                Color = Color3.fromRGB(0, 0, 120)
+                            else 
+                                Color = Color3.fromRGB(0, 0, 0)
+                            end 
+                            v[2].Color = Color 
+                            table.insert(v, Rarity)
+                        end 
+                        if ((not ChestESPMythical) and v[3] == "Mythical") or ((not ChestESPLegendary) and v[3] == "Legendary") or ((not ChestESPRare) and v[3] == "Rare") or ((not ChestESPUncommon) and v[3] == "Uncommon") or ((not ChestESPCommon) and v[3] == "Common") then 
+                            v[2].Visible = false 
+                            return
+                        end 
+                        v[2].Text = "Chest / "..v[3] .." / "..tostring(math.floor((v[1].Lock:FindFirstChildOfClass("MeshPart").Position - HumanoidRootPart.Position).Magnitude))
+                        v[2].Visible = true 
+                        v[2].Position = Vector2.new(Point.X, Point.Y) 
+                    end)
+                else 
+                    v[2].Visible = false 
+                end 
+            elseif UIActive() and (not ESPEnabled) then
+                pcall(function()
+                    v[2].Visible = false
+                end)
+            elseif (not UIActive()) then 
+                pcall(function()
+                    v[2]:Remove()
+                end)
+            else
+                pcall(function()
+                    v[2]:Remove()
+                end) 
+            end  
+        end 
+    end 
+    for i,v in pairs(Drawings) do 
+        if type(v) == "table" then 
+            if UIActive() and ESPEnabled and v[1] and v[1].Character and v[1].Character:FindFirstChild("HumanoidRootPart") and v[2] and v[3] then 
+                local Point, IsPointVisible = workspace.CurrentCamera:WorldToViewportPoint(v[1].Character.HumanoidRootPart.Position)
+                if IsPointVisible then 
+                    pcall(function()
+                        v[2].Visible = true
+                        v[2].Color = ESPColor or Color3.fromRGB(255, 255, 255)
+                        v[2].Position = Vector2.new(Point.X, Point.Y)
+                        v[2].Text = ((ESPNames and "Name: "..v[3].."\n") or "")
+                        ..((ESPHealth and v[1].Character:FindFirstChild("Humanoid") and "Health: "..(math.floor(v[1].Character.Humanoid.Health).."/"..math.floor(v[1].Character.Humanoid.MaxHealth)).."\n") or "")
+                        ..((ESPDistance and "Distance: "..math.floor((v[1].Character.HumanoidRootPart.Position - HumanoidRootPart.Position).Magnitude).."m\n") or "")
+                        ..((ESPFruit and ReplicatedStorage:FindFirstChild("Stats"..v[3]) and ReplicatedStorage["Stats"..v[3]]:FindFirstChild("Stats") and ReplicatedStorage["Stats"..v[3]].Stats:FindFirstChild("DF") and ReplicatedStorage["Stats"..v[3]].Stats.DF.Value ~= "" and "Fruit: "..(string.split(ReplicatedStorage["Stats"..v[3]].Stats.DF.Value, " ")[1] or ReplicatedStorage["Stats"..v[3]].Stats.DF.Value).."\n") or (ESPFruit and "Fruit: None\n") or "")
+                        ..((ESPStamina and ReplicatedStorage:FindFirstChild("Stats"..v[3]) and ReplicatedStorage["Stats"..v[3]]:FindFirstChild("Stamina") and "Stamina: "..ReplicatedStorage["Stats"..v[3]].Stamina.Value.."\n") or "")
+                        ..((ESPStaminaPoints and ReplicatedStorage:FindFirstChild("Stats"..v[3]) and ReplicatedStorage["Stats"..v[3]]:FindFirstChild("Stats") and ReplicatedStorage["Stats"..v[3]].Stats:FindFirstChild("Stamina") and "Stamina Points: "..ReplicatedStorage["Stats"..v[3]].Stats.Stamina.Value.."\n") or "")
+                    end)
+                else 
+                    pcall(function()
+                        v[2].Visible = false 
+                    end)
+                end  
+            elseif UIActive() and (not ESPEnabled) or (v[1] and (not v[1].Character) or (v[1].Character and (not v[1].Character:FindFirstChild("HumanoidRootPart")))) then 
+                pcall(function()
+                    v[2].Visible = false 
+                end)
+            elseif (v[3] and (not Players:FindFirstChild(v[3]))) or (not UIActive()) then 
+                pcall(function()
+                    v[2]:Remove()
+                end) 
+            end 
+        end 
+    end 
+end)
