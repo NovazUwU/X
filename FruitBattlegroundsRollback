@@ -75,6 +75,6 @@ repeat task.wait() until game:IsLoaded()
     local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
     Player.OnTeleport:Connect(function(state)
         if state == Enum.TeleportState.Started and queueteleport then 
-            queueteleport("_G.wl_key = readfile('KEY.txt') print(_G.wl_key) loadstring(game:HttpGet('https://scripts.luawl.com/13985/NovalineFruitBattlegrounds.lua'))()")
+            queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/Novaz5792/X/main/FruitBattlegroundsRollback'))()")
         end 
     end)
