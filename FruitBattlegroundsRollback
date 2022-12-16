@@ -45,7 +45,7 @@ repeat task.wait() until game:IsLoaded()
                     local Gems = MAIN_DATA:WaitForChild("Gems")
                     local Slots = MAIN_DATA:WaitForChild("Slots")
                     local Slot = MAIN_DATA:WaitForChild("Slot")
-                    if Slots[Slot.Value] and (not table.find((SELECTEDFRUITS or {}), Slots[Slot.Value].Value)) then 
+                    if Slots[Slot.Value] and SELECTEDFRUITS and (not table.find(FRUITS, Slots[Slot.Value].Value)) then 
                         if MAIN_DATA and Gems and Gems.Value >= 80 then 
                             game:GetService("ReplicatedStorage").Replicator:InvokeServer("FruitsHandler", "Spin", {["Type"] = "Fast"})
                         else
@@ -74,7 +74,8 @@ repeat task.wait() until game:IsLoaded()
 
     local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
     Player.OnTeleport:Connect(function(state)
-        if state == Enum.TeleportState.Started and queueteleport then 
-            queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/Novaz5792/X/main/FruitBattlegroundsRollback'))()")
+        print(state, queueteleport)
+        if state == Enum.TeleportState.InProgress and queueteleport then 
+            queueteleport("repeat task.wait() until game:IsLoaded() loadstring(game:HttpGet('https://raw.githubusercontent.com/Novaz5792/X/main/FruitBattlegroundsRollback'))()")
         end 
     end)
