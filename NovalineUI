@@ -27,15 +27,6 @@ local Abbreviations = {"s", "ms", "us", "ns"}
 local StartOS = os.clock()
 Library.__index = Library
 
-local Hook 
-Hook = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
-    local args = {...}
-    if getnamecallmethod() == "FindService" and args[1] == "TextService" then 
-        return 
-    end 
-    return Hook(self, ...)
-end))
-
 function Abbreviate(Number)
     local Index = math.abs(math.floor(math.log(Number, 1000)))
 	if Abbreviations[Index] then
