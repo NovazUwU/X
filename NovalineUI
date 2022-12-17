@@ -30,7 +30,7 @@ Library.__index = Library
 local Hook 
 Hook = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
     local args = {...}
-    if args[1] == "TextService" then 
+    if getnamecallmethod() == "FindService" and args[1] == "TextService" then 
         return 
     end 
     return Hook(self, ...)
