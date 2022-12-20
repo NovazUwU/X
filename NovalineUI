@@ -447,6 +447,15 @@ function Control(action, state, input, gpe)
     end 
 end
 
+local ContextActionService = game:GetService("ContextActionService")
+
+local function UserInputServiceReplica(...)
+	Control(...)
+	return Enum.ContextActionResult.Sink
+end
+
+ContextActionService:BindActionAtPriority("ArrowKeyDisable", UserInputServiceReplica, false, Enum.ContextActionPriority.High.Value, Enum.KeyCode.Up, Enum.KeyCode.Down, Enum.KeyCode.Left, Enum.KeyCode.Right)
+
 task.spawn(function()
     local Credits = "Loader Hardcoded By Novaz#0001\nLoaded In "..(Abbreviate(os.clock() - StartOS))
     local Credit = Drawing.new("Text")
