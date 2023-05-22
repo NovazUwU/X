@@ -1,4 +1,4 @@
-game.Players.LocalPlayer:Kick("https://discord.gg/fqGWBtPr24 DISCORD MOVED JOIN NEW ONE FOR KEY")
+
 positions = {
     [11468159863] = {
         ["Nomay Village"] = Vector3.new(3562.02392578125, 673.1098022460938, -2109.1650390625), 
@@ -17,8 +17,6 @@ positions = {
         
     }
 }
-
-table.sort(positions)
 
 local old 
 old = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
