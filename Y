@@ -18,6 +18,8 @@ positions = {
     }
 }
 
+table.sort(positions)
+
 local old 
 old = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
     if (not checkcaller()) and self == Player and getnamecallmethod():lower() == "kick" then 
