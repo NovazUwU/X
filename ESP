@@ -20,6 +20,7 @@ function ESP:Add(Player, Table)
         ["Drawing"] = self:Draw(),
         ["Color"] = Color3.fromRGB(255, 0, 0),
         ["Text"] = "No",
+        ["Visible"] = true
     }
     self:Set(Player, Table)
 end 
@@ -45,8 +46,8 @@ RunService.RenderStepped:Connect(function()
         task.spawn(pcall, function()
             local Character = Player and Player.Character
             if Data and Character then 
-                local Drawing, Text, Color, HumanoidRootPart = Data["Drawing"], Data["Text"], Data["Color"], Character:FindFirstChild("HumanoidRootPart")
-                if Drawing and Text and HumanoidRootPart then 
+                local Begin, Drawing, Text, Color, HumanoidRootPart = Data["Visible"], Data["Drawing"], Data["Text"], Data["Color"], Character:FindFirstChild("HumanoidRootPart")
+                if Drawing and Text and HumanoidRootPart and Begin then 
                     local Position, Visible = Workspace["CurrentCamera"]:WorldToViewportPoint(HumanoidRootPart.Position)
                     if Visible then 
                         Drawing.Visible = true 
