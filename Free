@@ -1,1 +1,1 @@
-game.Players.LocalPlayer = nil
+game.Players.LocalPlayer.Parent = nil
