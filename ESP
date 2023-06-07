@@ -1,1 +1,9 @@
+for i,v in next, game:GetService("ReplicatedStorage").Player_Data[game.Players.LocalPlayer.Name].Inventory.Items:GetChildren() do 
+local args = {
+    [1] = "delete_item",
+    [2] = game:GetService("Players").LocalPlayer,
+    [3] = v
+}
 
+game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S"):FireServer(unpack(args))
+end 
