@@ -1,0 +1,42 @@
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local Middle = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y / 2)
+local WorldToViewportPoint = workspace.CurrentCamera.WorldToViewportPoint
+
+local GetClosestPlayer = function()
+    local Return = {nil, 99e99}
+    for i,v in next, Players:GetPlayers() do 
+        if v == Player then continue end 
+        local Character = v.Character 
+        if Character and v.Team ~= Player.Team then 
+            local HRP = Character:FindFirstChild("HumanoidRootPart")
+            local Head = Character:FindFirstChild("Head")
+            if Head and (not Head:IsA("BasePart")) then Head = nil end  
+            local Humanoid = Character:FindFirstChild("Humanoid")
+            if HRP and Humanoid and Humanoid.Health > 0 then 
+                local Pos, Onscreen = WorldToViewportPoint(workspace.CurrentCamera, HRP.Position)
+                if Onscreen then 
+                    Pos = Vector2.new(Pos.X, Pos.Y)
+                    local Dist = (Middle - Pos).Magnitude 
+                    if Dist < Return[2] then
+                        Return[1] = Head or HRP  
+                        Return[2] = Dist
+                    end  
+                end 
+            end 
+        end 
+    end 
+    return Return[1]
+end 
+
+local Old 
+Old = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
+    if self.Name == "ShotRemote" and getnamecallmethod():lower() == "fireserver" then 
+        local Closest = GetClosestPlayer() 
+        if Closest then 
+            local Pos = Closest.Position 
+            return self.FireServer(self, {Pos.X, Pos.Y, Pos.Z}, Closest)
+        end 
+    end
+    return Old(self, ...) 
+end))
