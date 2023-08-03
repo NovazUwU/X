@@ -1,0 +1,26 @@
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:FindFirstChild("PlayerGui")
+local Character = LocalPlayer.Character
+local CharacterHandler = Character:FindFirstChild("CharacterHandler")
+local Remotes = CharacterHandler:FindFirstChild("Remotes")
+local DanceEventRemote = Remotes:FindFirstChild("DanceEvent")
+
+while true do
+    local DanceUI = PlayerGui:FindFirstChild("DanceDance")
+    local MainFrame = DanceUI and DanceUI:FindFirstChild("MainFrame")
+    if MainFrame then
+        for i,v in next, MainFrame:GetChildren() do
+            if not v:IsA("Frame") then continue end 
+            local Top = v:FindFirstChild("Top")
+            if not Top then continue end 
+            for i1,v1 in next, v:GetChildren() do
+                if v1.Name == "Bottom" and (v1.AbsolutePosition - Top.AbsolutePosition).Magnitude < 5 then
+                    DanceEventRemote:FireServer("Pressed", v.Name:gsub("Arrow", ""))
+                    v1:Destroy()
+                end
+            end
+        end
+    end
+    task.wait()
+end
